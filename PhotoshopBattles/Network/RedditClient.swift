@@ -11,29 +11,6 @@ import Alamofire
 import SwiftyJSON
 
 class RedditClient {
-    struct Constants {
-        static let BASE_URL = "https://www.reddit.com/api/v1/access_token"
-        static let CLIENT_ID = "ArB2sddOUAh0CA"
-        static let CLIENT_SECRET = ""
-        static let GRANT_TYPE = "https://oauth.reddit.com/grants/installed_client"
-        static let DEVICE_ID = "DO_NOT_TRACK_THIS_DEVICE"
-    }
-    
-    enum Endpoint {
-        case accessToken
-        
-        var stringValue: String {
-            switch self {
-            case .accessToken:
-                return Constants.BASE_URL
-            }
-        }
-        
-        var url: URL {
-            return URL(string: stringValue)!
-        }
-    }
-    
     class func getAccessToken(completion: @escaping (AccessTokenResponse?, Error?) -> Void) {
         let url = Endpoint.accessToken.url
         
@@ -43,17 +20,14 @@ class RedditClient {
 
         let authorizationString = "Basic \(encodedClientIDAndPassword)"
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
         let parameters: Parameters = [
-            "grant_type": Constants.GRANT_TYPE,
-            "device_id": Constants.DEVICE_ID
+            ParameterKeys.GRANT_TYPE: Constants.GRANT_TYPE,
+            ParameterKeys.DEVICE_ID: Constants.DEVICE_ID
         ]
         
         let headers: HTTPHeaders = [
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": authorizationString
+            HeaderKeys.CONTENT_TYPE: Constants.FORM_URL_ENCODED,
+            HeaderKeys.AUTHORIZATION: authorizationString
         ]
         
         AF.request(url, method: .post, parameters: parameters, headers: headers).validate().responseJSON { response in
@@ -71,11 +45,6 @@ class RedditClient {
                 completion(nil, response.error)
                 break
             }
-
-//            let json = JSON(response.value!)
-//            print("=== getAccessTokenTest ===")
-//            debugPrint(String(data: response.data!, encoding: .utf8))
-//            debugPrint(json["access_token"].type)
         }
     }
 }

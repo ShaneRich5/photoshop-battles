@@ -14,19 +14,23 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-//        RedditClient.getAccessToken()
-        
-        RedditClient.getAccessToken()
-        
-//        let urlString = "https://www.reddit.com/r/photoshopbattles.json"
-//        AF.request(urlString).response { response in
-//            let json = try? JSON(data: response.data!)
-//            debugPrint(json)
-//        }
+        fetchAccessToken()
     }
+    
+    func fetchAccessToken() {
+        RedditClient.getAccessToken(completion: { response, error in
+            guard error == nil else {
+                debugPrint("error: \(error?.localizedDescription ?? "Unknown Error")")
+                return
+            }
 
-
+            guard let accessToken = response?.accessToken, let expiresIn = response?.expiresIn else {
+                debugPrint("response missing, \(response)")
+                return
+            }
+            
+            debugPrint("accessToken: \(accessToken)")
+            debugPrint("expiresIn: \(expiresIn)")
+        })
+    }
 }
-
