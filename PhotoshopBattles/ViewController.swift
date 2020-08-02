@@ -7,14 +7,30 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        fetchAccessToken()
     }
+    
+    func fetchAccessToken() {
+        RedditClient.getAccessToken(completion: { response, error in
+            guard error == nil else {
+                debugPrint("error: \(error?.localizedDescription ?? "Unknown Error")")
+                return
+            }
 
-
+            guard let accessToken = response?.accessToken, let expiresIn = response?.expiresIn else {
+                debugPrint("response missing, \(response)")
+                return
+            }
+            
+            debugPrint("accessToken: \(accessToken)")
+            debugPrint("expiresIn: \(expiresIn)")
+        })
+    }
 }
-

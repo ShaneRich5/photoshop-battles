@@ -3,10 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E759061224D3BE48004168FC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E759061124D3BE48004168FC /* Alamofire */; };
+		E759061524D3BE7E004168FC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E759061424D3BE7E004168FC /* SwiftyJSON */; };
+		E759061824D3BF1F004168FC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E759061724D3BF1F004168FC /* Kingfisher */; };
+		E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */; };
+		E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */; };
+		E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DBA98D24D5609D008D97DC /* RedditClient.swift */; };
 		E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0A24D28774009B29BA /* AppDelegate.swift */; };
 		E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0C24D28774009B29BA /* SceneDelegate.swift */; };
 		E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0E24D28774009B29BA /* ViewController.swift */; };
@@ -16,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
+		E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedditClient+Extras.swift"; sourceTree = "<group>"; };
+		E7DBA98D24D5609D008D97DC /* RedditClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditClient.swift; sourceTree = "<group>"; };
 		E7E94E0724D28774009B29BA /* PhotoshopBattles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoshopBattles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7E94E0A24D28774009B29BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7E94E0C24D28774009B29BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,12 +40,42 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E759061824D3BF1F004168FC /* Kingfisher in Frameworks */,
+				E759061524D3BE7E004168FC /* SwiftyJSON in Frameworks */,
+				E759061224D3BE48004168FC /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E759060F24D3BC6E004168FC /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E7DBA98D24D5609D008D97DC /* RedditClient.swift */,
+				E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		E759061924D3BF4E004168FC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E7E94E1024D28774009B29BA /* Main.storyboard */,
+				E7E94E1324D28777009B29BA /* Assets.xcassets */,
+				E7E94E1524D28777009B29BA /* LaunchScreen.storyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		E77E4EEC24D6349E006209B6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E7E94DFE24D28774009B29BA = {
 			isa = PBXGroup;
 			children = (
@@ -56,12 +95,12 @@
 		E7E94E0924D28774009B29BA /* PhotoshopBattles */ = {
 			isa = PBXGroup;
 			children = (
+				E77E4EEC24D6349E006209B6 /* Models */,
+				E759061924D3BF4E004168FC /* UI */,
+				E759060F24D3BC6E004168FC /* Network */,
 				E7E94E0A24D28774009B29BA /* AppDelegate.swift */,
 				E7E94E0C24D28774009B29BA /* SceneDelegate.swift */,
 				E7E94E0E24D28774009B29BA /* ViewController.swift */,
-				E7E94E1024D28774009B29BA /* Main.storyboard */,
-				E7E94E1324D28777009B29BA /* Assets.xcassets */,
-				E7E94E1524D28777009B29BA /* LaunchScreen.storyboard */,
 				E7E94E1824D28777009B29BA /* Info.plist */,
 			);
 			path = PhotoshopBattles;
@@ -83,6 +122,11 @@
 			dependencies = (
 			);
 			name = PhotoshopBattles;
+			packageProductDependencies = (
+				E759061124D3BE48004168FC /* Alamofire */,
+				E759061424D3BE7E004168FC /* SwiftyJSON */,
+				E759061724D3BF1F004168FC /* Kingfisher */,
+			);
 			productName = PhotoshopBattles;
 			productReference = E7E94E0724D28774009B29BA /* PhotoshopBattles.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +155,11 @@
 				Base,
 			);
 			mainGroup = E7E94DFE24D28774009B29BA;
+			packageReferences = (
+				E759061024D3BE48004168FC /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E759061324D3BE7E004168FC /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				E759061624D3BF1F004168FC /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = E7E94E0824D28774009B29BA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,7 +187,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */,
 				E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */,
+				E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */,
+				E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */,
 				E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */,
 				E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */,
 			);
@@ -338,6 +390,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E759061024D3BE48004168FC /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.2;
+			};
+		};
+		E759061324D3BE7E004168FC /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		E759061624D3BF1F004168FC /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.14.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E759061124D3BE48004168FC /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E759061024D3BE48004168FC /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		E759061424D3BE7E004168FC /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E759061324D3BE7E004168FC /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		E759061724D3BF1F004168FC /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E759061624D3BF1F004168FC /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E7E94DFF24D28774009B29BA /* Project object */;
 }
