@@ -16,7 +16,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        debugPrint(UIDevice.current.identifierForVendor?.uuidString)
+//        RedditClient.getAccessToken()
+        
+        RedditClient.getAccessToken()
         
 //        let urlString = "https://www.reddit.com/r/photoshopbattles.json"
 //        AF.request(urlString).response { response in
