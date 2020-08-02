@@ -8,9 +8,20 @@
 
 import Foundation
 
-struct Post {
+class PostResponse: Decodable {
+    var postId: String!
     var title: String!
     var imageUrl: String!
     var author: String!
     var commentCount: Int!
+    var permalink: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case postId = "id"
+        case title = "title"
+        case imageUrl = "url"
+        case author = "author"
+        case permalink = "permalink"
+        case commentCount = "num_comments"
+    }
 }

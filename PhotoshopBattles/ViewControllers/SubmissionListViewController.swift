@@ -12,7 +12,7 @@ import UIKit
 class SubmissionListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var submissions = [Post]()
+    var posts = [PostResponse]()
     
     override func viewWillAppear(_ animated: Bool) {
         self.viewWillAppear(animated)
@@ -31,7 +31,10 @@ class SubmissionListViewController: UIViewController {
                 debugPrint("post not loaded")
                 return
             }
-            self.submissions = posts
+            
+            debugPrint(posts)
+            
+            self.posts = posts
             self.tableView.reloadData()
         }
     }
