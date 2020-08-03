@@ -14,7 +14,7 @@ class ContestDetailViewController: ViewController {
     static let storyboardIdentifier = "ContestDetailViewController"
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var post: PostResponse!
     
