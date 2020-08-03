@@ -10,7 +10,7 @@ import Foundation
 import Kingfisher
 import UIKit
 
-class SubmissionListViewController: UIViewController {
+class ContestListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var posts = [PostResponse]()
@@ -37,11 +37,19 @@ class SubmissionListViewController: UIViewController {
     }
 }
 
-extension SubmissionListViewController: UITableViewDelegate {
-    
+extension ContestListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = posts[indexPath.row]
+        
+        let contestDetailViewController = storyboard?.instantiateViewController(withIdentifier: ContestDetailViewController.storyboardIdentifier) as! ContestDetailViewController
+        contestDetailViewController.post = post
+        navigationController!.pushViewController(contestDetailViewController, animated: true)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
-extension SubmissionListViewController: UITableViewDataSource {
+extension ContestListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
