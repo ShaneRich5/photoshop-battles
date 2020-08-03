@@ -67,25 +67,19 @@ class RedditClient {
                     let json = JSON(value)
                     let decoder = JSONDecoder()
                     
-                    let postData: [PostResponse] = json["data"]["children"].arrayValue.filter { children in
+                    let postData: [PostResponse] = try json["data"]["children"].arrayValue.filter { children in
                         return children["data"]["post_hint"].stringValue == "image"
                     }.map { children in
                         let data = children["data"]
                         
                         // should filter nil results from try? rather than using try!
-                        return try! decoder.decode(PostResponse.self, from: data.rawData())
+                        return try decoder.decode(PostResponse.self, from: data.rawData())
                     }
                     
                     completion(postData, nil)
                 } catch {
                     completion(nil, error)
                 }
-                
-//                let posts = json["data"]["children"].arrayValue.map { data in
-//
-//
-//                    return Post(title: data["data"]["title"].stringValue, imageUrl: data["data"]["url"].stringValue, author: data["data"]["author"].stringValue, commentCount: data["data"]["num_comments"].intValue)
-//                }
                 break
             case .failure(let error):
                 debugPrint(error)
@@ -94,4 +88,5 @@ class RedditClient {
             }
         }
     }
+    
 }
