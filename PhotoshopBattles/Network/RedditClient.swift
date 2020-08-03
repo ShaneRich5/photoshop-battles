@@ -11,7 +11,13 @@ import Alamofire
 import SwiftyJSON
 
 class RedditClient {
-    class func getAccessToken(completion: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    static let shared = RedditClient()
+    
+    public var accessToken: String?
+    
+    fileprivate init() { }
+    
+    func getAccessToken(completion: @escaping (AccessTokenResponse?, Error?) -> Void) {
         let url = Endpoint.accessToken.url
         
         let loginString = String(format: "%@:%@", Constants.CLIENT_ID, Constants.CLIENT_SECRET)
@@ -36,6 +42,9 @@ class RedditClient {
                 do {
                     let decoder = JSONDecoder()
                     let accessTokenResponse = try decoder.decode(AccessTokenResponse.self, from: response.data!)
+                    
+                    self.accessToken = accessTokenResponse.accessToken
+                    
                     completion(accessTokenResponse, nil)
                 } catch {
                     completion(nil, error)
@@ -43,6 +52,44 @@ class RedditClient {
                 break
             case .failure:
                 completion(nil, response.error)
+                break
+            }
+        }
+    }
+    
+    func getListingOfPosts(filter: SortByFilter = SortByFilter.hot, _ completion: @escaping ([PostResponse]?, Error?) -> Void) {
+        let url = Endpoint.subreddit(filter).url
+        
+        AF.request(url).validate().responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                do {
+                    let json = JSON(value)
+                    let decoder = JSONDecoder()
+                    
+                    let postData: [PostResponse] = json["data"]["children"].arrayValue.filter { children in
+                        return children["data"]["post_hint"].stringValue == "image"
+                    }.map { children in
+                        let data = children["data"]
+                        
+                        // should filter nil results from try? rather than using try!
+                        return try! decoder.decode(PostResponse.self, from: data.rawData())
+                    }
+                    
+                    completion(postData, nil)
+                } catch {
+                    completion(nil, error)
+                }
+                
+//                let posts = json["data"]["children"].arrayValue.map { data in
+//
+//
+//                    return Post(title: data["data"]["title"].stringValue, imageUrl: data["data"]["url"].stringValue, author: data["data"]["author"].stringValue, commentCount: data["data"]["num_comments"].intValue)
+//                }
+                break
+            case .failure(let error):
+                debugPrint(error)
+                completion(nil, error)
                 break
             }
         }

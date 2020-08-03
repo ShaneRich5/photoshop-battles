@@ -14,11 +14,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAccessToken()
+//        fetchAccessToken()
+//        RedditClient.shared.getListingOfPosts()
     }
     
     func fetchAccessToken() {
-        RedditClient.getAccessToken(completion: { response, error in
+        RedditClient.shared.getAccessToken(completion: { response, error in
             guard error == nil else {
                 debugPrint("error: \(error?.localizedDescription ?? "Unknown Error")")
                 return

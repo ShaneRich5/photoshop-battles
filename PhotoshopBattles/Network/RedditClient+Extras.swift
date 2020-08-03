@@ -20,7 +20,7 @@ extension RedditClient {
     }
     
     struct Constants {
-        static let BASE_URL = "https://www.reddit.com/api/v1/access_token"
+        static let BASE_URL = "https://www.reddit.com"
         static let CLIENT_ID = "ArB2sddOUAh0CA"
         static let CLIENT_SECRET = ""
         static let GRANT_TYPE = "https://oauth.reddit.com/grants/installed_client"
@@ -28,13 +28,23 @@ extension RedditClient {
         static let FORM_URL_ENCODED = "application/x-www-form-urlencoded"
     }
     
+    enum SortByFilter: String {
+        case hot = "hot"
+        case new = "new"
+        case top = "top"
+        case rising = "rising"
+    }
+    
     enum Endpoint {
         case accessToken
+        case subreddit(SortByFilter)
         
         var stringValue: String {
             switch self {
             case .accessToken:
-                return Constants.BASE_URL
+                return "\(Constants.BASE_URL)/api/v1/access_token"
+            case .subreddit(let filter):
+                return "\(Constants.BASE_URL)/r/photoshopbattles/\(filter.rawValue).json"
             }
         }
         
