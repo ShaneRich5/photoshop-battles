@@ -9,15 +9,17 @@
 import Foundation
 
 class PostResponse: Decodable {
-    var postId: String!
+    var upvotes: Int!
     var title: String!
-    var imageUrl: String!
     var author: String!
+    var postId: String!
+    var imageUrl: String!
     var commentCount: Int!
     var permalink: String!
     
     enum CodingKeys: String, CodingKey {
         case postId = "id"
+        case upvotes = "ups"
         case title = "title"
         case imageUrl = "url"
         case author = "author"

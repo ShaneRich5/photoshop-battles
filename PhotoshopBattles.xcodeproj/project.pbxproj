@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E72E780D24D77086006E79FF /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E780C24D77086006E79FF /* PostTableViewCell.swift */; };
 		E759061224D3BE48004168FC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E759061124D3BE48004168FC /* Alamofire */; };
 		E759061524D3BE7E004168FC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E759061424D3BE7E004168FC /* SwiftyJSON */; };
 		E759061824D3BF1F004168FC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E759061724D3BF1F004168FC /* Kingfisher */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E72E780C24D77086006E79FF /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
 		E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedditClient+Extras.swift"; sourceTree = "<group>"; };
 		E77E4EF124D6A177006209B6 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -53,6 +55,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E72E780E24D7708E006E79FF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E72E780C24D77086006E79FF /* PostTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E759060F24D3BC6E004168FC /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +85,7 @@
 		E77E4EEC24D6349E006209B6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E72E780E24D7708E006E79FF /* Views */,
 				E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */,
 				E77E4EF124D6A177006209B6 /* Post.swift */,
 			);
@@ -209,6 +220,7 @@
 				E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */,
 				E77E4EF224D6A177006209B6 /* Post.swift in Sources */,
 				E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */,
+				E72E780D24D77086006E79FF /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

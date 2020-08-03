@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 import UIKit
 
 class SubmissionListViewController: UIViewController {
@@ -14,13 +15,11 @@ class SubmissionListViewController: UIViewController {
     
     var posts = [PostResponse]()
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.viewWillAppear(animated)
-        tableView.delegate = self
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.delegate = self
+        tableView.dataSource = self
         
         RedditClient.shared.getListingOfPosts { posts, error in
             guard error == nil else {
@@ -32,8 +31,6 @@ class SubmissionListViewController: UIViewController {
                 return
             }
             
-            debugPrint(posts)
-            
             self.posts = posts
             self.tableView.reloadData()
         }
@@ -42,4 +39,31 @@ class SubmissionListViewController: UIViewController {
 
 extension SubmissionListViewController: UITableViewDelegate {
     
+}
+
+extension SubmissionListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.reuseIdentifier) as! PostTableViewCell
+        let post = posts[indexPath.row]
+        
+        cell.titleLabel.text = post.title
+        
+        if let upvotes = post.upvotes, let commentCount = post.commentCount {
+            cell.subtitleLabel.text = "Upvotes: \(upvotes) Comments: \(commentCount)"
+        }
+        
+        if let imageView = cell.imageView {
+            let imageUrl = URL(string: post.imageUrl)!
+            let placeholderImage = UIImage(named: "loading")
+            
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(with: imageUrl, placeholder: placeholderImage)
+        }
+        
+        return cell
+    }
 }
