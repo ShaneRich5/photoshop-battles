@@ -13,7 +13,7 @@ import UIKit
 class ContestListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var posts = [PostResponse]()
+    var posts = [Post]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

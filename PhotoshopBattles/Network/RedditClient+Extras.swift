@@ -38,6 +38,7 @@ extension RedditClient {
     enum Endpoint {
         case accessToken
         case subreddit(SortByFilter)
+        case comments(String)
         
         var stringValue: String {
             switch self {
@@ -45,6 +46,8 @@ extension RedditClient {
                 return "\(Constants.BASE_URL)/api/v1/access_token"
             case .subreddit(let filter):
                 return "\(Constants.BASE_URL)/r/photoshopbattles/\(filter.rawValue).json"
+            case .comments(let permalink):
+                return "\(Constants.BASE_URL)\(permalink).json"
             }
         }
         

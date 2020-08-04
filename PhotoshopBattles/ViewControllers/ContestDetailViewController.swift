@@ -16,7 +16,8 @@ class ContestDetailViewController: ViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var post: PostResponse!
+    var post: Post!
+    var comments: [Comment]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,19 @@ class ContestDetailViewController: ViewController {
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: imageUrl)
         
-        print(post.imageUrl)
-        print(post.permalink)
+        RedditClient.shared.getListingOfComments(permalink: post.permalink) { comments, error in
+            guard error == nil else {
+                debugPrint("Error present: \(error)")
+                return
+            }
+
+            guard let comments = comments else {
+                debugPrint("comments not loaded")
+                return
+            }
+
+            self.comments = comments
+            print("comments: \(comments.map { $0.body.extractURLs().first })")
+        }
     }
 }
