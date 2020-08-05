@@ -13,9 +13,12 @@ class Comment: Decodable {
     var body: String!
     var createdAt: Date!
     
+    var imageUrl: URL!
+    
     var url: URL? {
         get {
-            return body.extractURLs().first
+//            print("body \(body)")
+            return body?.extractURLs().first
         }
     }
     

@@ -67,7 +67,7 @@ class RedditClient {
                     let json = JSON(value)
                     let decoder = JSONDecoder()
                     
-                    let postData: [Post] = try json["data"]["children"].arrayValue.filter { children in
+                    let posts: [Post] = try json["data"]["children"].arrayValue.filter { children in
                         return children["data"]["post_hint"].stringValue == "image"
                     }.map { children in
                         let data = children["data"]
@@ -76,7 +76,20 @@ class RedditClient {
                         return try decoder.decode(Post.self, from: data.rawData())
                     }
                     
-                    completion(postData, nil)
+//                    let postDData = postData
+//                    .map { post in
+////                        guard let url = post.url else {
+////                            return post
+////                        }
+////
+//                        let urlString = post.url?.absoluteString
+////
+//                        print("urlString: \(post.urlurlString)")
+////
+//                        return post
+//                    }
+                    
+                    completion(posts, nil)
                 } catch {
                     completion(nil, error)
                 }
@@ -99,12 +112,25 @@ class RedditClient {
                     
                     print("children count: \(json[1]["data"]["children"].arrayValue.count)")
                     
-                    let comments: [Comment] = try json[1]["data"]["children"].arrayValue.map { children in
-                        let data = children["data"]
-                        return try decoder.decode(Comment.self, from: data.rawData())
-                    }.filter { comment in
-                        return comment.url != nil
+                    var comments: [Comment] = []
+                    
+                    
+                    for child in json[1]["data"]["children"].arrayValue {
+                        let data = child["data"]
+                        let comment = try decoder.decode(Comment.self, from: data.rawData())
+                        
+                        if let url = comment.url {
+                            let urlString = url.absoluteString
+                            
+                            if urlString.hasSuffix(".png") || urlString.hasSuffix(".jpg") {
+                                comment.imageUrl = URL(string: url.absoluteString)
+                            }
+                        }
+                        
+                        comments.append(comment)
                     }
+                    
+                    print("absoluteString: \(comments[0].url?.absoluteString)")
                     
                     completion(comments, nil)
                 } catch {
