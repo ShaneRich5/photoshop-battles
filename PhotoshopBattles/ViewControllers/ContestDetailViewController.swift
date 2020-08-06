@@ -30,6 +30,7 @@ class ContestDetailViewController: ViewController {
         imageView.kf.setImage(with: imageUrl)
         
         collectionView.dataSource = self
+        collectionView.delegate = self
         
         RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(comments:error:))
     }
@@ -89,6 +90,15 @@ class ContestDetailViewController: ViewController {
                     comment.imageUrl = URL(string: "\(urlString).png")!
                 }
             }
+        }
+    }
+}
+
+extension ContestDetailViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let comment = comments[indexPath.row]
+        if let imageUrl = comment.imageUrl {
+            imageView.kf.setImage(with: imageUrl)
         }
     }
 }
