@@ -57,7 +57,7 @@ class RedditClient {
         }
     }
     
-    func getListingOfPosts(filter: SortByFilter = SortByFilter.hot, _ completion: @escaping ([PostResponse]?, Error?) -> Void) {
+    func getListingOfPosts(filter: SortByFilter = SortByFilter.hot, _ completion: @escaping ([Post]?, Error?) -> Void) {
         let url = Endpoint.subreddit(filter).url
         
         AF.request(url).validate().responseJSON { response in
@@ -67,30 +67,70 @@ class RedditClient {
                     let json = JSON(value)
                     let decoder = JSONDecoder()
                     
-                    let postData: [PostResponse] = json["data"]["children"].arrayValue.filter { children in
+                    let posts: [Post] = try json["data"]["children"].arrayValue.filter { children in
                         return children["data"]["post_hint"].stringValue == "image"
                     }.map { children in
                         let data = children["data"]
                         
                         // should filter nil results from try? rather than using try!
-                        return try! decoder.decode(PostResponse.self, from: data.rawData())
+                        return try decoder.decode(Post.self, from: data.rawData())
                     }
                     
-                    completion(postData, nil)
+//                    let postDData = postData
+//                    .map { post in
+////                        guard let url = post.url else {
+////                            return post
+////                        }
+////
+//                        let urlString = post.url?.absoluteString
+////
+//                        print("urlString: \(post.urlurlString)")
+////
+//                        return post
+//                    }
+                    
+                    completion(posts, nil)
                 } catch {
                     completion(nil, error)
                 }
-                
-//                let posts = json["data"]["children"].arrayValue.map { data in
-//
-//
-//                    return Post(title: data["data"]["title"].stringValue, imageUrl: data["data"]["url"].stringValue, author: data["data"]["author"].stringValue, commentCount: data["data"]["num_comments"].intValue)
-//                }
-                break
             case .failure(let error):
                 debugPrint(error)
                 completion(nil, error)
-                break
+            }
+        }
+    }
+    
+    func getListingOfComments(permalink: String, _ completion: @escaping ([Comment]?, Error?) -> Void) {
+        let url = Endpoint.comments(permalink).url
+        
+        AF.request(url).validate().responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                do {
+                    let json = JSON(value)
+                    let decoder = JSONDecoder()
+                    
+                    print("children count: \(json[1]["data"]["children"].arrayValue.count)")
+                    
+                    var comments: [Comment] = []
+                    
+                    
+                    for child in json[1]["data"]["children"].arrayValue {
+                        let data = child["data"]
+                        
+                        if child["kind"].stringValue == "t1" && data["body"] != "[deleted]" {
+                            let comment = try decoder.decode(Comment.self, from: data.rawData())
+                            
+                            comments.append(comment)
+                        }
+                    }
+                    
+                    completion(comments, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            case.failure(let error):
+                completion(nil, error)
             }
         }
     }

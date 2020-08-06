@@ -26,6 +26,8 @@ extension RedditClient {
         static let GRANT_TYPE = "https://oauth.reddit.com/grants/installed_client"
         static let DEVICE_ID = "DO_NOT_TRACK_THIS_DEVICE"
         static let FORM_URL_ENCODED = "application/x-www-form-urlencoded"
+        static let ALBUM_ENDPOINT = "/a/"
+        static let GALLERY_ENDPOINT = "/gallery/"
     }
     
     enum SortByFilter: String {
@@ -38,6 +40,7 @@ extension RedditClient {
     enum Endpoint {
         case accessToken
         case subreddit(SortByFilter)
+        case comments(String)
         
         var stringValue: String {
             switch self {
@@ -45,6 +48,8 @@ extension RedditClient {
                 return "\(Constants.BASE_URL)/api/v1/access_token"
             case .subreddit(let filter):
                 return "\(Constants.BASE_URL)/r/photoshopbattles/\(filter.rawValue).json"
+            case .comments(let permalink):
+                return "\(Constants.BASE_URL)\(permalink).json"
             }
         }
         

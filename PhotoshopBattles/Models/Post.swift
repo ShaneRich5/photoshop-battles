@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PostResponse: Decodable {
+class Post: Decodable {
     var upvotes: Int!
     var title: String!
     var author: String!
@@ -19,8 +19,8 @@ class PostResponse: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case postId = "id"
-        case upvotes = "ups"
         case title = "title"
+        case upvotes = "ups"
         case imageUrl = "url"
         case author = "author"
         case permalink = "permalink"
