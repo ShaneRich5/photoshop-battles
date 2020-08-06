@@ -117,20 +117,13 @@ class RedditClient {
                     
                     for child in json[1]["data"]["children"].arrayValue {
                         let data = child["data"]
-                        let comment = try decoder.decode(Comment.self, from: data.rawData())
                         
-                        if let url = comment.url {
-                            let urlString = url.absoluteString
+                        if child["kind"].stringValue == "t1" && data["body"] != "[deleted]" {
+                            let comment = try decoder.decode(Comment.self, from: data.rawData())
                             
-                            if urlString.hasSuffix(".png") || urlString.hasSuffix(".jpg") {
-                                comment.imageUrl = URL(string: url.absoluteString)
-                            }
+                            comments.append(comment)
                         }
-                        
-                        comments.append(comment)
                     }
-                    
-                    print("absoluteString: \(comments[0].url?.absoluteString)")
                     
                     completion(comments, nil)
                 } catch {

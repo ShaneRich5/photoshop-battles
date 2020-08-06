@@ -16,6 +16,8 @@ class ImgurClient {
     }
     
     struct Constants {
+        static let ALBUM_ENDPOINT = "/a/"
+        static let GALLERY_ENDPOINT = "/gallery/"
         static let CLIENT_ID = "872f7866868a052"
     }
     
@@ -44,13 +46,18 @@ class ImgurClient {
     
     fileprivate init() { }
     
-    func getAlbumImage(albumId: String, completion: @escaping (String?, Error?) -> Void) {
+    func getAlbumImage(albumId: String, _ completion: @escaping (String?, Error?) -> Void) {
         let url = Endpoint.album(albumId).url
         getImageForUrl(url, completion)
     }
     
-    func getGalleryImage(galleryId: String, completion: @escaping (String?, Error?) -> Void) {
+    func getGalleryImage(galleryId: String, _ completion: @escaping (String?, Error?) -> Void) {
         let url = Endpoint.gallery(galleryId).url
+        
+        if galleryId == "5e5lOP" {
+            print()
+        }
+        
         getImageForUrl(url, completion)
     }
     
@@ -65,6 +72,11 @@ class ImgurClient {
             case .success(let value):
                 let json = JSON(value)
                 let link = json["data"][0]["link"].stringValue
+                
+                if (url.absoluteString == "https://imgur.com/gallery/5e5lOP") {
+                    print("getImageForUrl \(url) \(link)")
+                }
+                
                 completion(link, nil)
             case .failure(let error):
                 completion(nil, error)

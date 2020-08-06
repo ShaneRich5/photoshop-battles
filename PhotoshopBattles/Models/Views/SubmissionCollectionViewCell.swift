@@ -2,7 +2,7 @@
 //  SubmissionCollectionViewCell.swift
 //  PhotoshopBattles
 //
-//  Created by Shane Richards on 8/3/20.
+//  Created by Shane Richards on 8/6/20.
 //  Copyright © 2020 Shane Richards. All rights reserved.
 //
 
