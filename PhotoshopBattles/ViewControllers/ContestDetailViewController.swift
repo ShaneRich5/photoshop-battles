@@ -66,12 +66,10 @@ class ContestDetailViewController: ViewController {
                         if let link = link {
                             self.comments[index].imageUrl = URL(string: link)!
                             self.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-//                            print("comments success album \(albumId) imageUrl: \(self.comments.map { $0.imageUrl })")
                             self.fetchingCommentUrls[urlString] = "success"
                         } else {
                             self.fetchingCommentUrls[urlString] = "failed"
                         }
-//                        print("comments failed album \(albumId) imageUrl: \(self.comments.map { $0.imageUrl })")
                         
                     }
                 } else if urlString.contains(ImgurClient.Constants.GALLERY_ENDPOINT) {
@@ -82,19 +80,10 @@ class ContestDetailViewController: ViewController {
                         if let link = link {
                             self.comments[index].imageUrl = URL(string: link)!
                             self.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-                            print("comments success gallery \(galleryId) imageUrl: \(self.comments.map { $0.imageUrl })")
-                            
                             self.fetchingCommentUrls[urlString] = "success"
-//                            if urlString == "https://imgur.com/gallery/5e5lOP" {
-//                                print("url: \(index) \(url!) \(urlString.components(separatedBy: ImgurClient.Constants.GALLERY_ENDPOINT).last!)")
-//                            }
-                            
-//                            print("comments gallery \(galleryId) imageUrl: \(self.comments.map { $0.imageUrl })")
                         } else {
                             self.fetchingCommentUrls[urlString] = "failed"
                         }
-                        
-                        print("comments failed gallery \(galleryId) imageUrl: \(self.comments.map { $0.imageUrl })")
                     }
                 } else {
                     comment.imageUrl = URL(string: "\(urlString).png")!
@@ -127,7 +116,6 @@ extension ContestDetailViewController: UICollectionViewDataSource {
                 
             }
         }
-//        cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "loading"), completionHandler: )
         
         return cell
     }
