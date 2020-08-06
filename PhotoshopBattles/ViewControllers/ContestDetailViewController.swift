@@ -15,24 +15,12 @@ class ContestDetailViewController: ViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var post: Post!
     var comments = [Comment]()
     
     var fetchingCommentUrls: [String: String] = [:]
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        let space: CGFloat = 3.0
-        let width = (view.frame.size.width - (2 * space)) / 3.0
-        let height = (view.frame.size.height - (2 * space)) / 3.0
-        
-        flowLayout.minimumInteritemSpacing = space
-        flowLayout.minimumLineSpacing = space
-        flowLayout.itemSize = CGSize(width: width, height: height)
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
