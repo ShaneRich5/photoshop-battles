@@ -234,6 +234,9 @@
                         <viewLayoutGuide key="safeArea" id="thD-pn-MHE"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Saved" id="RkG-Dw-oSB"/>
+                    <connections>
+                        <outlet property="collectionView" destination="WCg-hT-YHN" id="QLZ-7e-O5c"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7a-EG-Ln0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
