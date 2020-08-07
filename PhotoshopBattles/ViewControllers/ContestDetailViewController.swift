@@ -123,7 +123,6 @@ extension ContestDetailViewController: UICollectionViewDataSource {
                 case .failure(let error):
                     print("Job failed: \(error.localizedDescription)")
                 }
-                
             }
         }
         
