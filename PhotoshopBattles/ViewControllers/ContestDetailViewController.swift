@@ -21,6 +21,35 @@ class ContestDetailViewController: ViewController {
     
     var fetchingCommentUrls: [String: String] = [:]
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveContest))
+    }
+    
+    @objc func saveContest() {
+        let contest = Contest(context: DataController.shared.viewContext)
+        contest.image = post.image
+        contest.postId = post.postId
+        contest.permalink = post.permalink
+        
+        do {
+            var submissions = [Submission]()
+            
+            for comment in comments {
+                let submission = Submission(context: DataController.shared.viewContext)
+                
+                submission.id = comment.id
+                submission.image = comment.image
+                submission.author = comment.author
+                submission.contest = contest
+            }
+            
+            try DataController.shared.viewContext.save()
+        } catch {
+            debugPrint(error)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,7 +78,7 @@ class ContestDetailViewController: ViewController {
         self.comments = comments.filter { $0.url != nil }
         collectionView.reloadData()
         
-        print("comments url: \(self.comments.map { $0.url })")
+//        print("comments url: \(self.comments.map { $0.url })")
         
         for (index, comment) in self.comments.enumerated() {
             let url = comment.url
@@ -114,12 +143,12 @@ extension ContestDetailViewController: UICollectionViewDataSource {
         let comment = comments[indexPath.row]
         
         if let imageUrl = comment.imageUrl {
-            print("imageUrl: \(imageUrl)")
             cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "loading")) {result in
                 switch result {
                 case .success(let value):
-                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                    comment.image = value.image.pngData()
+//                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
                 case .failure(let error):
                     print("Job failed: \(error.localizedDescription)")
                 }

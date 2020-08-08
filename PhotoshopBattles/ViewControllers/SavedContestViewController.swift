@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class SavedContestViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var fetchResultsController: NSFetchedResultsController<Contest>!
     
     override func viewDidLoad() {
         super.viewDidLoad()

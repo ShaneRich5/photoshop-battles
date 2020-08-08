@@ -69,7 +69,14 @@ extension ContestListViewController: UITableViewDataSource {
             let placeholderImage = UIImage(named: "loading")
             
             imageView.kf.indicatorType = .activity
-            imageView.kf.setImage(with: imageUrl, placeholder: placeholderImage)
+            imageView.kf.setImage(with: imageUrl, placeholder: placeholderImage) { result in
+                switch result {
+                case .success(let value):
+                    post.image = value.image.pngData()
+                case .failure(let error):
+                    debugPrint(error)
+                }
+            }
         }
         
         return cell
