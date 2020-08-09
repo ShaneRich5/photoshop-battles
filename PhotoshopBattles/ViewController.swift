@@ -26,7 +26,7 @@ class ViewController: UIViewController {
             }
 
             guard let accessToken = response?.accessToken, let expiresIn = response?.expiresIn else {
-                debugPrint("response missing, \(response)")
+                debugPrint("response missing, \(response!)")
                 return
             }
             

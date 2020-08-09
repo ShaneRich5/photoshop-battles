@@ -23,7 +23,7 @@ class ContestListViewController: UIViewController {
         
         RedditClient.shared.getListingOfPosts { posts, error in
             guard error == nil else {
-                debugPrint("Error present: \(error)")
+                debugPrint("Error present: \(error!)")
                 return
             }
             guard let posts = posts else {

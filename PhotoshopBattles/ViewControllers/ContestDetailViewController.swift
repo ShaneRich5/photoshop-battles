@@ -9,6 +9,7 @@
 import Foundation
 import Kingfisher
 import UIKit
+import CoreData
 
 class ContestDetailViewController: ViewController {
     static let storyboardIdentifier = "ContestDetailViewController"
@@ -27,27 +28,43 @@ class ContestDetailViewController: ViewController {
     }
     
     @objc func saveContest() {
-        let contest = Contest(context: DataController.shared.viewContext)
-        contest.image = post.image
-        contest.postId = post.postId
-        contest.permalink = post.permalink
-        
         do {
-            var submissions = [Submission]()
-            
-            for comment in comments {
-                let submission = Submission(context: DataController.shared.viewContext)
-                
-                submission.id = comment.id
-                submission.image = comment.image
-                submission.author = comment.author
-                submission.contest = contest
-            }
-            
+            let contest = Contest(context: DataController.shared.viewContext)
+            contest.image = post.image
+            contest.postId = post.postId
+            contest.permalink = post.permalink
+            contest.createDate = Date()
             try DataController.shared.viewContext.save()
+            
+
+            let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
+            
+            let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+            
+            try fetchResultsController.performFetch()
+            
+            print("fetchResultsController?.fetchedObjects?.count: \(fetchResultsController.fetchedObjects?.count)")
         } catch {
             debugPrint(error)
         }
+        
+//        do {
+//
+//            for comment in comments {
+//                let submission = Submission(context: DataController.shared.viewContext)
+//
+//                submission.id = comment.id
+//                submission.image = comment.image
+//                submission.author = comment.author
+//                submission.createDate = Date()
+//                submission.contest = contest
+//            }
+//
+//            try DataController.shared.viewContext.save()
+//        } catch {
+//            debugPrint(error)
+//        }
     }
     
     override func viewDidLoad() {
@@ -66,7 +83,7 @@ class ContestDetailViewController: ViewController {
     
     func handleCommentsLoaded(comments: [Comment]?, error: Error?) {
         guard error == nil else {
-            debugPrint("Error present: \(error)")
+            debugPrint("Error present: \(error!)")
             return
         }
 
@@ -148,7 +165,6 @@ extension ContestDetailViewController: UICollectionViewDataSource {
                 switch result {
                 case .success(let value):
                     comment.image = value.image.pngData()
-//                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
                 case .failure(let error):
                     print("Job failed: \(error.localizedDescription)")
                 }
