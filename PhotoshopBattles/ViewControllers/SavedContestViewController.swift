@@ -17,7 +17,6 @@ class SavedContestViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("self.navigationItem: \(self.navigationItem)")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
     }
     
@@ -41,7 +40,19 @@ class SavedContestViewController: UIViewController {
     }
     
     @objc fileprivate func clearAllSavedContests() {
-        print("Clear All pressed!")
+        guard let contests = fetchResultsController.fetchedObjects else {
+            print("failed to delete contests!")
+            return
+        }
+        
+        do {
+            for contest in contests {
+                DataController.shared.viewContext.delete(contest)
+                try DataController.shared.viewContext.save()
+            }
+        } catch {
+            debugPrint(error)
+        }
     }
     
     fileprivate func setupFlowLayout() {
@@ -78,7 +89,6 @@ extension SavedContestViewController: NSFetchedResultsControllerDelegate {
 
 extension SavedContestViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("fetchResultsController?.fetchedObjects?.count ?? 0: \(fetchResultsController?.fetchedObjects?.count ?? 0)")
         return fetchResultsController?.fetchedObjects?.count ?? 0
     }
 
