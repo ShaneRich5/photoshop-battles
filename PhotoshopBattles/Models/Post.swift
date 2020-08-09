@@ -16,6 +16,7 @@ class Post: Decodable {
     var imageUrl: String!
     var commentCount: Int!
     var permalink: String!
+    var image: Data?
     
     enum CodingKeys: String, CodingKey {
         case postId = "id"

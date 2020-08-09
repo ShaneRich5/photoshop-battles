@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E712E99C24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */; };
 		E72E780D24D77086006E79FF /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E780C24D77086006E79FF /* PostTableViewCell.swift */; };
 		E72E781024D7D038006E79FF /* ContestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E780F24D7D038006E79FF /* ContestDetailViewController.swift */; };
 		E72E781424D8D036006E79FF /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E781324D8D036006E79FF /* Comment.swift */; };
@@ -19,6 +20,9 @@
 		E77E4EF224D6A177006209B6 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EF124D6A177006209B6 /* Post.swift */; };
 		E77E4EF524D6A9B5006209B6 /* ContestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */; };
 		E7B2FE5C24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5B24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift */; };
+		E7B2FE5E24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5D24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift */; };
+		E7B2FE6024DD136900FE88B7 /* SavedContestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */; };
+		E7B2FE6424DD147100FE88B7 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE6324DD147100FE88B7 /* DataController.swift */; };
 		E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DBA98D24D5609D008D97DC /* RedditClient.swift */; };
 		E7DBCAF424DB3CE100B7E397 /* ImgurClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DBCAF324DB3CE100B7E397 /* ImgurClient.swift */; };
 		E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0A24D28774009B29BA /* AppDelegate.swift */; };
@@ -30,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E712E99B24DE05AC003B88DA /* PhotoshopBattles.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoshopBattles.xcdatamodel; sourceTree = "<group>"; };
 		E72E780C24D77086006E79FF /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		E72E780F24D7D038006E79FF /* ContestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContestDetailViewController.swift; sourceTree = "<group>"; };
 		E72E781324D8D036006E79FF /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -39,6 +44,9 @@
 		E77E4EF124D6A177006209B6 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContestListViewController.swift; sourceTree = "<group>"; };
 		E7B2FE5B24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionCollectionViewCell.swift; sourceTree = "<group>"; };
+		E7B2FE5D24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedContestCollectionViewCell.swift; sourceTree = "<group>"; };
+		E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedContestViewController.swift; sourceTree = "<group>"; };
+		E7B2FE6324DD147100FE88B7 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		E7DBA98D24D5609D008D97DC /* RedditClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditClient.swift; sourceTree = "<group>"; };
 		E7DBCAF324DB3CE100B7E397 /* ImgurClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurClient.swift; sourceTree = "<group>"; };
 		E7E94E0724D28774009B29BA /* PhotoshopBattles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoshopBattles.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +78,7 @@
 			children = (
 				E72E780C24D77086006E79FF /* PostTableViewCell.swift */,
 				E7B2FE5B24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift */,
+				E7B2FE5D24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -101,6 +110,7 @@
 				E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */,
 				E77E4EF124D6A177006209B6 /* Post.swift */,
 				E72E781324D8D036006E79FF /* Comment.swift */,
+				E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -110,6 +120,7 @@
 			children = (
 				E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */,
 				E72E780F24D7D038006E79FF /* ContestDetailViewController.swift */,
+				E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -142,6 +153,7 @@
 				E7E94E0E24D28774009B29BA /* ViewController.swift */,
 				E7E94E1824D28777009B29BA /* Info.plist */,
 				E72E781524D8D1E4006E79FF /* String+Extras.swift */,
+				E7B2FE6324DD147100FE88B7 /* DataController.swift */,
 			);
 			path = PhotoshopBattles;
 			sourceTree = "<group>";
@@ -232,12 +244,16 @@
 				E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */,
 				E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */,
 				E72E781624D8D1E4006E79FF /* String+Extras.swift in Sources */,
+				E7B2FE5E24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift in Sources */,
 				E72E781024D7D038006E79FF /* ContestDetailViewController.swift in Sources */,
+				E7B2FE6424DD147100FE88B7 /* DataController.swift in Sources */,
 				E77E4EF524D6A9B5006209B6 /* ContestListViewController.swift in Sources */,
 				E72E781424D8D036006E79FF /* Comment.swift in Sources */,
 				E7DBCAF424DB3CE100B7E397 /* ImgurClient.swift in Sources */,
+				E7B2FE6024DD136900FE88B7 /* SavedContestViewController.swift in Sources */,
 				E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */,
 				E77E4EF224D6A177006209B6 /* Post.swift in Sources */,
+				E712E99C24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld in Sources */,
 				E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */,
 				E72E780D24D77086006E79FF /* PostTableViewCell.swift in Sources */,
 				E7B2FE5C24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift in Sources */,
@@ -483,6 +499,19 @@
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E712E99B24DE05AC003B88DA /* PhotoshopBattles.xcdatamodel */,
+			);
+			currentVersion = E712E99B24DE05AC003B88DA /* PhotoshopBattles.xcdatamodel */;
+			path = PhotoshopBattles.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E7E94DFF24D28774009B29BA /* Project object */;
 }
