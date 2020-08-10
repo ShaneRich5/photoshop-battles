@@ -26,4 +26,16 @@ class Post: Decodable {
         case author = "author"
         case permalink = "permalink"
     }
+    
+    func toComment() {
+        let comment = Comment()
+        
+        comment.id = post.postId
+        comment.body = post.body
+        comment.image = post.image
+        comment.author = post.author
+        comment.imageUrl = post.imageUrl
+        
+        return comment
+    }
 }
