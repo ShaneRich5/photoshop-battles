@@ -36,7 +36,7 @@ class ContestDetailViewController: ViewController {
             contest.createDate = Date()
             contest.submissions = []
             
-            let commentWithImages = comments.filter { comment in comment.image != nil && !comment.isPost }
+            let commentWithImages = comments.filter { comment in !comment.isPost }
                 
             commentWithImages.forEach { comment in
                 let submission = Submission(context: DataController.shared.viewContext)
@@ -71,6 +71,8 @@ class ContestDetailViewController: ViewController {
             
             RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(commentsFromResponse:error:))
         }
+        
+        navigationItem.title = post.title
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -150,6 +152,13 @@ class ContestDetailViewController: ViewController {
 extension ContestDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let comment = comments[indexPath.row]
+        
+        if comment.isPost == true {
+            navigationItem.title = comment.body
+        } else if let author = comment.author {
+            navigationItem.title = "by \(author)"
+        }
+        
         if let imageUrl = comment.imageUrl {
             imageView.kf.setImage(with: imageUrl)
         }

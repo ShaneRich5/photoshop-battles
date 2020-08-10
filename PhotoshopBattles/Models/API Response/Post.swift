@@ -34,6 +34,7 @@ class Post: Decodable {
         comment.image = image
         comment.author = author
         comment.imageUrl = URL(string: imageUrl)!
+        comment.body = title
         comment.isPost = true
         
         return comment
