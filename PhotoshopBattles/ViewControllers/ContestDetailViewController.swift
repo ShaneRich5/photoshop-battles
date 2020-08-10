@@ -21,6 +21,12 @@ class ContestDetailViewController: ViewController {
     var contest: Contest?
     var comments = [Comment]()
     
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//        hidesBottomBarWhenPushed = true
+//    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveContest))
@@ -28,6 +34,7 @@ class ContestDetailViewController: ViewController {
     
     @objc func saveContest() {
         do {
+            
             let contest = Contest(context: DataController.shared.viewContext)
             contest.image = post.image
             contest.postId = post.postId

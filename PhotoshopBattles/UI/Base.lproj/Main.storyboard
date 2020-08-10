@@ -72,7 +72,7 @@
         <!--Contest Detail View Controller-->
         <scene sceneID="0Se-48-BOo">
             <objects>
-                <viewController storyboardIdentifier="ContestDetailViewController" id="m3B-po-n6B" customClass="ContestDetailViewController" customModule="PhotoshopBattles" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContestDetailViewController" hidesBottomBarWhenPushed="YES" id="m3B-po-n6B" customClass="ContestDetailViewController" customModule="PhotoshopBattles" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SfL-kR-VoV">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
