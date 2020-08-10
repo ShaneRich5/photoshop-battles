@@ -12,6 +12,8 @@ import CoreData
 class SavedContestViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var label: UILabel!
     
     var fetchResultsController: NSFetchedResultsController<Contest>!
     
@@ -22,8 +24,13 @@ class SavedContestViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setLoadingState(isLoading: true)
         setupFlowLayout()
-        
+        fetchSavedContests()
+        setLoadingState(isLoading: false)
+    }
+    
+    func fetchSavedContests() {
         let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
         
@@ -36,6 +43,14 @@ class SavedContestViewController: UIViewController {
             collectionView.reloadData()
         } catch {
             debugPrint(error)
+        }
+    }
+    
+    func setLoadingState(isLoading: Bool) {
+        if isLoading == true {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -102,7 +117,11 @@ extension SavedContestViewController: NSFetchedResultsControllerDelegate {
 
 extension SavedContestViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResultsController?.fetchedObjects?.count ?? 0
+        let count = fetchResultsController?.fetchedObjects?.count ?? 0
+        
+        label.isHidden = count > 0
+        
+        return count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

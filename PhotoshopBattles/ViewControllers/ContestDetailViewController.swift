@@ -28,15 +28,29 @@ class ContestDetailViewController: ViewController {
     
     @objc func saveContest() {
         do {
-            
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Contest.fetchRequest()
+            fetchRequest.fetchLimit = 1
+            fetchRequest.predicate = NSPredicate(format: "postId == %@", post.postId)
+            let result = try DataController.shared.viewContext.fetch(fetchRequest)
+            if let first = result.first {
+               print("result \(first) \(result)")
+               // do something with event
+            } else {
+                print("not found")
+            }
+        } catch {
+            print(error)
+        }
+        
+        do {
             let contest = Contest(context: DataController.shared.viewContext)
             contest.image = post.image
             contest.postId = post.postId
             contest.permalink = post.permalink
             contest.createDate = Date()
-            contest.submissions = []
+            contest.title = post.title
             
-            let commentWithImages = comments.filter { comment in !comment.isPost }
+            let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
                 
             commentWithImages.forEach { comment in
                 let submission = Submission(context: DataController.shared.viewContext)
@@ -71,7 +85,7 @@ class ContestDetailViewController: ViewController {
             
             RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(commentsFromResponse:error:))
         }
-        
+        print(post.title)
         navigationItem.title = post.title
         
         collectionView.dataSource = self

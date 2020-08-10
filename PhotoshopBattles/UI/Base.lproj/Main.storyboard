@@ -163,7 +163,7 @@
             </objects>
             <point key="canvasLocation" x="1205.7971014492755" y="120.53571428571428"/>
         </scene>
-        <!--Title-->
+        <!--Saved Contests-->
         <scene sceneID="ClE-DT-mCZ">
             <objects>
                 <viewController id="gK4-6B-er3" customClass="SavedContestViewController" customModule="PhotoshopBattles" customModuleProvider="target" sceneMemberID="viewController">
@@ -209,20 +209,37 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="GWn-bN-1L9">
+                                <rect key="frame" x="197" y="440.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visit the Contest tab to start saving your favourite submissions." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u05-Nz-EtT">
+                                <rect key="frame" x="48" y="430" width="318" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="WCg-hT-YHN" firstAttribute="leading" secondItem="thD-pn-MHE" secondAttribute="leading" id="3Bf-Xt-YQk"/>
+                            <constraint firstItem="u05-Nz-EtT" firstAttribute="centerY" secondItem="thD-pn-MHE" secondAttribute="centerY" id="9ph-ZU-6qK"/>
+                            <constraint firstItem="u05-Nz-EtT" firstAttribute="centerX" secondItem="thD-pn-MHE" secondAttribute="centerX" id="J5R-Pc-ywG"/>
                             <constraint firstItem="thD-pn-MHE" firstAttribute="trailing" secondItem="WCg-hT-YHN" secondAttribute="trailing" id="OA5-yT-aeU"/>
+                            <constraint firstItem="thD-pn-MHE" firstAttribute="leading" secondItem="u05-Nz-EtT" secondAttribute="leading" constant="-48" id="ShO-9g-Gze"/>
                             <constraint firstItem="WCg-hT-YHN" firstAttribute="top" secondItem="thD-pn-MHE" secondAttribute="top" id="goL-ww-qPq"/>
                             <constraint firstItem="thD-pn-MHE" firstAttribute="bottom" secondItem="WCg-hT-YHN" secondAttribute="bottom" id="guB-aD-IW6"/>
+                            <constraint firstItem="u05-Nz-EtT" firstAttribute="trailing" secondItem="thD-pn-MHE" secondAttribute="trailing" constant="-48" id="h9F-mK-KlQ"/>
+                            <constraint firstItem="GWn-bN-1L9" firstAttribute="centerX" secondItem="thD-pn-MHE" secondAttribute="centerX" id="nbg-rR-m0c"/>
+                            <constraint firstItem="GWn-bN-1L9" firstAttribute="centerY" secondItem="thD-pn-MHE" secondAttribute="centerY" id="yrJ-4o-M2S"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="thD-pn-MHE"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="a6a-Jv-0rq"/>
+                    <navigationItem key="navigationItem" title="Saved Contests" id="a6a-Jv-0rq"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="GWn-bN-1L9" id="Pyq-hf-MeZ"/>
                         <outlet property="collectionView" destination="WCg-hT-YHN" id="QLZ-7e-O5c"/>
                         <outlet property="flowLayout" destination="Oxo-p6-efI" id="u0s-0j-d3N"/>
+                        <outlet property="label" destination="u05-Nz-EtT" id="vw8-sL-3i5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7a-EG-Ln0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
