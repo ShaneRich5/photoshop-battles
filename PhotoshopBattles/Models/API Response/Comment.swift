@@ -12,14 +12,12 @@ class Comment: Decodable {
     var id: String!
     var author: String!
     var body: String!
-    var createdAt: Date!
     
     var imageUrl: URL!
     var image: Data?
     
     var url: URL? {
         get {
-//            print("body \(body)")
             return body?.extractURLs().first
         }
     }
@@ -28,6 +26,5 @@ class Comment: Decodable {
         case id = "name"
         case body = "body"
         case author = "author"
-        case createdAt = "created"
     }
 }

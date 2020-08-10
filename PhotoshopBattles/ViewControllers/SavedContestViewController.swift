@@ -72,6 +72,19 @@ class SavedContestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
+        collectionView.delegate = self
+    }
+}
+
+extension SavedContestViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let contest = fetchResultsController.object(at: indexPath)
+        let post = contest.toPost()
+        
+        let contestDetailViewController = storyboard?.instantiateViewController(withIdentifier: ContestDetailViewController.storyboardIdentifier) as! ContestDetailViewController
+        contestDetailViewController.post = post
+        contestDetailViewController.contest = contest
+        navigationController!.pushViewController(contestDetailViewController, animated: true)
     }
 }
 

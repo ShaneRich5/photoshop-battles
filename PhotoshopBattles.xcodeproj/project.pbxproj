@@ -19,6 +19,8 @@
 		E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */; };
 		E77E4EF224D6A177006209B6 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EF124D6A177006209B6 /* Post.swift */; };
 		E77E4EF524D6A9B5006209B6 /* ContestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */; };
+		E7A94A9C24E09BF700DEA089 /* Contest+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A94A9B24E09BF700DEA089 /* Contest+Extras.swift */; };
+		E7A94A9E24E0F4E600DEA089 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A94A9D24E0F4E600DEA089 /* Submission.swift */; };
 		E7B2FE5C24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5B24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift */; };
 		E7B2FE5E24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5D24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift */; };
 		E7B2FE6024DD136900FE88B7 /* SavedContestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */; };
@@ -43,6 +45,8 @@
 		E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedditClient+Extras.swift"; sourceTree = "<group>"; };
 		E77E4EF124D6A177006209B6 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContestListViewController.swift; sourceTree = "<group>"; };
+		E7A94A9B24E09BF700DEA089 /* Contest+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contest+Extras.swift"; sourceTree = "<group>"; };
+		E7A94A9D24E0F4E600DEA089 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		E7B2FE5B24DC44E400FE88B7 /* SubmissionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionCollectionViewCell.swift; sourceTree = "<group>"; };
 		E7B2FE5D24DD10F200FE88B7 /* SavedContestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedContestCollectionViewCell.swift; sourceTree = "<group>"; };
 		E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedContestViewController.swift; sourceTree = "<group>"; };
@@ -106,11 +110,9 @@
 		E77E4EEC24D6349E006209B6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E7A94A9A24E09BDA00DEA089 /* Core Data */,
+				E7A94A9924E09BC200DEA089 /* API Response */,
 				E72E780E24D7708E006E79FF /* Views */,
-				E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */,
-				E77E4EF124D6A177006209B6 /* Post.swift */,
-				E72E781324D8D036006E79FF /* Comment.swift */,
-				E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -123,6 +125,26 @@
 				E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E7A94A9924E09BC200DEA089 /* API Response */ = {
+			isa = PBXGroup;
+			children = (
+				E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */,
+				E77E4EF124D6A177006209B6 /* Post.swift */,
+				E72E781324D8D036006E79FF /* Comment.swift */,
+			);
+			path = "API Response";
+			sourceTree = "<group>";
+		};
+		E7A94A9A24E09BDA00DEA089 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */,
+				E7A94A9B24E09BF700DEA089 /* Contest+Extras.swift */,
+				E7A94A9D24E0F4E600DEA089 /* Submission.swift */,
+			);
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 		E7E94DFE24D28774009B29BA = {
@@ -240,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */,
+				E7A94A9C24E09BF700DEA089 /* Contest+Extras.swift in Sources */,
 				E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */,
 				E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */,
 				E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */,
@@ -253,6 +276,7 @@
 				E7B2FE6024DD136900FE88B7 /* SavedContestViewController.swift in Sources */,
 				E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */,
 				E77E4EF224D6A177006209B6 /* Post.swift in Sources */,
+				E7A94A9E24E0F4E600DEA089 /* Submission.swift in Sources */,
 				E712E99C24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld in Sources */,
 				E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */,
 				E72E780D24D77086006E79FF /* PostTableViewCell.swift in Sources */,

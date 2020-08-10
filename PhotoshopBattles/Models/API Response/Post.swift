@@ -14,9 +14,9 @@ class Post: Decodable {
     var author: String!
     var postId: String!
     var imageUrl: String!
-    var commentCount: Int!
     var permalink: String!
     var image: Data?
+    var isSaved = false
     
     enum CodingKeys: String, CodingKey {
         case postId = "id"
@@ -25,6 +25,5 @@ class Post: Decodable {
         case imageUrl = "url"
         case author = "author"
         case permalink = "permalink"
-        case commentCount = "num_comments"
     }
 }

@@ -60,8 +60,8 @@ extension ContestListViewController: UITableViewDataSource {
         
         cell.titleLabel.text = post.title
         
-        if let upvotes = post.upvotes, let commentCount = post.commentCount {
-            cell.subtitleLabel.text = "Upvotes: \(upvotes) Comments: \(commentCount)"
+        if let upvotes = post.upvotes, let author = post.author {
+            cell.subtitleLabel.text = "by \(author) Upvotes: \(upvotes)"
         }
         
         if let imageView = cell.imageView {
