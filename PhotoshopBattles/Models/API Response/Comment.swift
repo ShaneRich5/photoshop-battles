@@ -15,6 +15,7 @@ class Comment: Decodable {
     
     var imageUrl: URL!
     var image: Data?
+    var isPost = false
     
     var url: URL? {
         get {

@@ -36,7 +36,7 @@ class ContestDetailViewController: ViewController {
             contest.createDate = Date()
             contest.submissions = []
             
-            let commentWithImages = comments.filter { comment in comment.image != nil }
+            let commentWithImages = comments.filter { comment in comment.image != nil && !comment.isPost }
                 
             commentWithImages.forEach { comment in
                 let submission = Submission(context: DataController.shared.viewContext)
@@ -69,7 +69,7 @@ class ContestDetailViewController: ViewController {
             imageView.kf.indicatorType = .activity
             imageView.kf.setImage(with: imageUrl)
             
-            RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(comments:error:))
+            RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(commentsFromResponse:error:))
         }
         
         collectionView.dataSource = self
@@ -96,23 +96,22 @@ class ContestDetailViewController: ViewController {
         }
     }
     
-    func handleCommentsLoaded(comments: [Comment]?, error: Error?) {
+    func handleCommentsLoaded(commentsFromResponse: [Comment]?, error: Error?) {
         guard error == nil else {
             debugPrint("Error present: \(error!)")
             return
         }
 
-        guard let comments = comments else {
+        guard let commentsFromResponse = commentsFromResponse else {
             debugPrint("comments not loaded")
             return
         }
 
-        self.comments = comments.filter { $0.url != nil }
+        comments = commentsFromResponse.filter { $0.url != nil }
+        comments.insert(post.toComment(), at: 0)
         collectionView.reloadData()
         
-//        print("comments url: \(self.comments.map { $0.url })")
-        
-        for (index, comment) in self.comments.enumerated() {
+        for (index, comment) in comments.enumerated() {
             let url = comment.url
 
             if let urlString = url?.absoluteString  {
@@ -168,10 +167,8 @@ extension ContestDetailViewController: UICollectionViewDataSource {
         let comment = comments[indexPath.row]
         
         if let image = comment.image {
-            print("preloaded image! \(image)")
             cell.imageView.image = UIImage(data: image)
         } else if let imageUrl = comment.imageUrl {
-            print("fetching image! \(imageUrl.absoluteString)")
             cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "loading")) {result in
                 switch result {
