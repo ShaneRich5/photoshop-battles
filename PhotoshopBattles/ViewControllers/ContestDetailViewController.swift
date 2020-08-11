@@ -11,7 +11,7 @@ import Kingfisher
 import UIKit
 import CoreData
 
-class ContestDetailViewController: UIViewController {
+class ContestDetailViewController: ViewController {
     static let storyboardIdentifier = "ContestDetailViewController"
     
     @IBOutlet weak var imageView: UIImageView!
@@ -23,7 +23,7 @@ class ContestDetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveContest))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(attemptToSaveContest))
     }
     
     func fetchExistingContestById() -> Contest? {
@@ -46,53 +46,59 @@ class ContestDetailViewController: UIViewController {
         }
     }
     
-    @objc func saveContest() {
+    @objc func attemptToSaveContest() {
         let existingContest = fetchExistingContestById()
         
-        if existingContest != nil {
-            
-        }
-        
-        
-        var contest: Contest? = nil
-        
-        if let contest = existingContest {
-            showAlert()
-        } else {
-            contest = Contest(context: DataController.shared.viewContext)
-        }
-        
         if let existingContest = existingContest {
-            print("contest already exists: \(existingContest)")
-        } else {
-        
-            do {
-                
-                contest.image = post.image
-                contest.postId = post.postId
-                contest.permalink = post.permalink
-                contest.createDate = Date()
-                contest.title = post.title
-                
-                let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
-                    
-                commentWithImages.forEach { comment in
-                    let submission = Submission(context: DataController.shared.viewContext)
-                    
-                    submission.id = comment.id
-                    submission.image = comment.image
-                    submission.author = comment.author
-                    submission.createDate = Date()
-                    submission.imageUrl = comment.imageUrl.absoluteString
-                    
-                    submission.contest = contest
-                }
-                
-                try DataController.shared.viewContext.save()
-            } catch {
-                debugPrint(error)
+            let title = "Overriding Contest"
+            let message = "Continunig will override the previous submissions"
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            let overrideAction = UIAlertAction(title: "Override", style: .default) { _ in
+                DataController.shared.viewContext.delete(existingContest)
+                self.saveContest(contest: Contest(context: DataController.shared.viewContext))
             }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+            
+            alert.addAction(overrideAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        } else {
+            let contest = Contest(context: DataController.shared.viewContext)
+            saveContest(contest: contest)
         }
+    }
+    
+    func saveContest(contest: Contest) {
+        do {
+            let contest = Contest(context: DataController.shared.viewContext)
+            contest.image = post.image
+            contest.postId = post.postId
+            contest.permalink = post.permalink
+            contest.createDate = Date()
+            contest.title = post.title
+
+            let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
+
+            commentWithImages.forEach { comment in
+                let submission = Submission(context: DataController.shared.viewContext)
+
+                submission.id = comment.id
+                submission.image = comment.image
+                submission.author = comment.author
+                submission.createDate = Date()
+                submission.imageUrl = comment.imageUrl.absoluteString
+
+                submission.contest = contest
+            }
+
+            try DataController.shared.viewContext.save()
+        } catch {
+            debugPrint(error)
+        }
+        
     }
     
     override func viewDidLoad() {

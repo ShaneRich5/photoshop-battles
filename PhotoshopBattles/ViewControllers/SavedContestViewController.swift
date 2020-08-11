@@ -51,13 +51,23 @@ class SavedContestViewController: UIViewController {
             activityIndicator.startAnimating()
         } else {
             activityIndicator.stopAnimating()
-            label.isHidden = fetchResultsController?.fetchedObjects?.count ?? 0 > 0
+            
+            let hasSavedContest = fetchResultsController?.fetchedObjects?.count ?? 0 > 0
+            label.isHidden = hasSavedContest
+            
+            if hasSavedContest {
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
         }
     }
     
     @objc fileprivate func clearAllSavedContests() {
+        setLoadingState(isLoading: true)
         guard let contests = fetchResultsController.fetchedObjects else {
             print("failed to delete contests!")
+            setLoadingState(isLoading: false)
             return
         }
         
@@ -66,6 +76,8 @@ class SavedContestViewController: UIViewController {
                 DataController.shared.viewContext.delete(contest)
                 try DataController.shared.viewContext.save()
             }
+            
+            setLoadingState(isLoading: false)
         } catch {
             debugPrint(error)
         }
