@@ -11,7 +11,7 @@ import Kingfisher
 import UIKit
 import CoreData
 
-class ContestDetailViewController: ViewController {
+class ContestDetailViewController: UIViewController {
     static let storyboardIdentifier = "ContestDetailViewController"
     
     @IBOutlet weak var imageView: UIImageView!
@@ -26,47 +26,72 @@ class ContestDetailViewController: ViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveContest))
     }
     
-    @objc func saveContest() {
+    func fetchExistingContestById() -> Contest? {
         do {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Contest.fetchRequest()
+            let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
             fetchRequest.fetchLimit = 1
             fetchRequest.predicate = NSPredicate(format: "postId == %@", post.postId)
-            let result = try DataController.shared.viewContext.fetch(fetchRequest)
+            let result: [Contest] = try DataController.shared.viewContext.fetch(fetchRequest)
             if let first = result.first {
                print("result \(first) \(result)")
                // do something with event
+                return first
             } else {
                 print("not found")
+                return nil
             }
         } catch {
             print(error)
+            return nil
+        }
+    }
+    
+    @objc func saveContest() {
+        let existingContest = fetchExistingContestById()
+        
+        if existingContest != nil {
+            
         }
         
-        do {
-            let contest = Contest(context: DataController.shared.viewContext)
-            contest.image = post.image
-            contest.postId = post.postId
-            contest.permalink = post.permalink
-            contest.createDate = Date()
-            contest.title = post.title
-            
-            let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
+        
+        var contest: Contest? = nil
+        
+        if let contest = existingContest {
+            showAlert()
+        } else {
+            contest = Contest(context: DataController.shared.viewContext)
+        }
+        
+        if let existingContest = existingContest {
+            print("contest already exists: \(existingContest)")
+        } else {
+        
+            do {
                 
-            commentWithImages.forEach { comment in
-                let submission = Submission(context: DataController.shared.viewContext)
+                contest.image = post.image
+                contest.postId = post.postId
+                contest.permalink = post.permalink
+                contest.createDate = Date()
+                contest.title = post.title
                 
-                submission.id = comment.id
-                submission.image = comment.image
-                submission.author = comment.author
-                submission.createDate = Date()
-                submission.imageUrl = comment.imageUrl.absoluteString
+                let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
+                    
+                commentWithImages.forEach { comment in
+                    let submission = Submission(context: DataController.shared.viewContext)
+                    
+                    submission.id = comment.id
+                    submission.image = comment.image
+                    submission.author = comment.author
+                    submission.createDate = Date()
+                    submission.imageUrl = comment.imageUrl.absoluteString
+                    
+                    submission.contest = contest
+                }
                 
-                submission.contest = contest
+                try DataController.shared.viewContext.save()
+            } catch {
+                debugPrint(error)
             }
-            
-            try DataController.shared.viewContext.save()
-        } catch {
-            debugPrint(error)
         }
     }
     
@@ -85,7 +110,7 @@ class ContestDetailViewController: ViewController {
             
             RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(commentsFromResponse:error:))
         }
-        print(post.title)
+        
         navigationItem.title = post.title
         
         collectionView.dataSource = self
@@ -102,9 +127,9 @@ class ContestDetailViewController: ViewController {
             let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: post!.postId)
 
             try fetchResultsController.performFetch()
-            
+
             let submissions = fetchResultsController.fetchedObjects!
-            
+
             comments = submissions.map { submission in submission.toComment() }
             collectionView.reloadData()
         } catch {

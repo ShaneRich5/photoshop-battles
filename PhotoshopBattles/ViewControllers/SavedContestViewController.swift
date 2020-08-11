@@ -51,6 +51,7 @@ class SavedContestViewController: UIViewController {
             activityIndicator.startAnimating()
         } else {
             activityIndicator.stopAnimating()
+            label.isHidden = fetchResultsController?.fetchedObjects?.count ?? 0 > 0
         }
     }
     
@@ -117,11 +118,7 @@ extension SavedContestViewController: NSFetchedResultsControllerDelegate {
 
 extension SavedContestViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = fetchResultsController?.fetchedObjects?.count ?? 0
-        
-        label.isHidden = count > 0
-        
-        return count
+        return fetchResultsController?.fetchedObjects?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

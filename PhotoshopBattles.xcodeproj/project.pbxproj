@@ -15,6 +15,7 @@
 		E759061224D3BE48004168FC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E759061124D3BE48004168FC /* Alamofire */; };
 		E759061524D3BE7E004168FC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E759061424D3BE7E004168FC /* SwiftyJSON */; };
 		E759061824D3BF1F004168FC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E759061724D3BF1F004168FC /* Kingfisher */; };
+		E75E9D5924E1C0B6003B1900 /* ViewController+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75E9D5824E1C0B6003B1900 /* ViewController+Extras.swift */; };
 		E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */; };
 		E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */; };
 		E77E4EF224D6A177006209B6 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E4EF124D6A177006209B6 /* Post.swift */; };
@@ -41,6 +42,7 @@
 		E72E780F24D7D038006E79FF /* ContestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContestDetailViewController.swift; sourceTree = "<group>"; };
 		E72E781324D8D036006E79FF /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		E72E781524D8D1E4006E79FF /* String+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extras.swift"; sourceTree = "<group>"; };
+		E75E9D5824E1C0B6003B1900 /* ViewController+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extras.swift"; sourceTree = "<group>"; };
 		E77E4EED24D634E5006209B6 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
 		E77E4EEF24D66315006209B6 /* RedditClient+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedditClient+Extras.swift"; sourceTree = "<group>"; };
 		E77E4EF124D6A177006209B6 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				E77E4EF424D6A9B5006209B6 /* ContestListViewController.swift */,
 				E72E780F24D7D038006E79FF /* ContestDetailViewController.swift */,
 				E7B2FE5F24DD136900FE88B7 /* SavedContestViewController.swift */,
+				E75E9D5824E1C0B6003B1900 /* ViewController+Extras.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			files = (
 				E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */,
 				E7A94A9C24E09BF700DEA089 /* Contest+Extras.swift in Sources */,
+				E75E9D5924E1C0B6003B1900 /* ViewController+Extras.swift in Sources */,
 				E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */,
 				E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */,
 				E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */,
