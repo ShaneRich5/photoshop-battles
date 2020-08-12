@@ -56,7 +56,7 @@ class ContestDetailViewController: ViewController {
             
             let overrideAction = UIAlertAction(title: "Override", style: .default) { _ in
                 DataController.shared.viewContext.delete(existingContest)
-                self.saveContest(contest: Contest(context: DataController.shared.viewContext))
+                self.saveContest()
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .default)
@@ -66,12 +66,11 @@ class ContestDetailViewController: ViewController {
             
             present(alert, animated: true, completion: nil)
         } else {
-            let contest = Contest(context: DataController.shared.viewContext)
-            saveContest(contest: contest)
+            saveContest()
         }
     }
     
-    func saveContest(contest: Contest) {
+    func saveContest() {
         do {
             let contest = Contest(context: DataController.shared.viewContext)
             contest.image = post.image

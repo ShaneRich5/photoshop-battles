@@ -9,17 +9,9 @@
 import UIKit
 
 extension UIViewController {
-    func showAlert() {
-        let alert = UIAlertController(title: "My Alert", message: "This is an alert.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-        NSLog("The \"OK\" alert occured.")
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .default, handler: { _ in
-        NSLog("The \"Cancel\" alert occured.")
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Third", comment: "Default action"), style: .default, handler: { _ in
-        NSLog("The \"Third\" alert occured.")
-        }))
+    func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "Error!", message: "This is an alert.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title:"Ok", style: .default))
         self.present(alert, animated: true, completion: nil)
     }
 }

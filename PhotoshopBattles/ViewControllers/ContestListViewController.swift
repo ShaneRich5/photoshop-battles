@@ -12,8 +12,14 @@ import UIKit
 
 class ContestListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     var posts = [Post]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,17 +27,31 @@ class ContestListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        downaloadContests()
+    }
+    
+    func showLoading(isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            errorLabel.isHidden = true
+        } else {
+            activityIndicator.stopAnimating()
+            errorLabel.isHidden = posts.count > 0
+        }
+    }
+    
+    fileprivate func downaloadContests() {
+        showLoading(isLoading: true)
+        
         RedditClient.shared.getListingOfPosts { posts, error in
-            guard error == nil else {
-                debugPrint("Error present: \(error!)")
-                return
-            }
-            guard let posts = posts else {
-                debugPrint("post not loaded")
+            guard error == nil, let posts = posts else {
+                self.showLoading(isLoading: false)
+                self.showErrorAlert(message: "Failed to load posts.")
                 return
             }
             
             self.posts = posts
+            self.showLoading(isLoading: false)
             self.tableView.reloadData()
         }
     }
@@ -68,8 +88,17 @@ extension ContestListViewController: UITableViewDataSource {
             let imageUrl = URL(string: post.imageUrl)!
             let placeholderImage = UIImage(named: "loading")
             
+            imageView.contentMode = .scaleAspectFit
             imageView.kf.indicatorType = .activity
-            imageView.kf.setImage(with: imageUrl, placeholder: placeholderImage) { result in
+            imageView.kf.setImage(
+                with: imageUrl,
+                placeholder: placeholderImage,
+                options: [
+                    .processor(DownsamplingImageProcessor(size: imageView.frame.size)),
+                    .scaleFactor(UIScreen.main.scale),
+                    .cacheOriginalImage,
+                ]
+            ) { result in
                 switch result {
                 case .success(let value):
                     post.image = value.image.pngData()

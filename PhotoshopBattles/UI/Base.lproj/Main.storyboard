@@ -50,11 +50,24 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="GYP-yJ-8bm">
+                                <rect key="frame" x="197" y="440.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Failed to load contests." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="me7-pW-vtJ">
+                                <rect key="frame" x="119" y="440" width="176.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="GYP-yJ-8bm" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="5Re-76-jf5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tKx-yo-a80" secondAttribute="trailing" id="7BY-fk-nyL"/>
+                            <constraint firstItem="GYP-yJ-8bm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="WEW-Ce-nN5"/>
+                            <constraint firstItem="me7-pW-vtJ" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="YGH-dX-V9B"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tKx-yo-a80" secondAttribute="bottom" id="ctG-fp-0ia"/>
+                            <constraint firstItem="me7-pW-vtJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fff-gH-rc1"/>
                             <constraint firstItem="tKx-yo-a80" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pHx-j0-NLg"/>
                             <constraint firstItem="tKx-yo-a80" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="pXG-6T-qh2"/>
                         </constraints>
@@ -62,6 +75,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="GSf-j4-Kac"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="GYP-yJ-8bm" id="Vky-cJ-xeC"/>
+                        <outlet property="errorLabel" destination="me7-pW-vtJ" id="Jo2-El-UXu"/>
                         <outlet property="tableView" destination="tKx-yo-a80" id="aS2-pb-qr4"/>
                     </connections>
                 </viewController>
