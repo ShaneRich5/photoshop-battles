@@ -20,7 +20,12 @@ class ContestListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshContests))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshContests)),
+            UIBarButtonItem(title: "Category", style: .plain, target: self, action: #selector(changeCategories)),
+        ]
+        
+        navigationItem.title = "Hot - Contests"
     }
     
     override func viewDidLoad() {
@@ -37,6 +42,29 @@ class ContestListViewController: UIViewController {
         downaloadContests()
     }
     
+    @objc fileprivate func changeCategories() {
+        let alert =  UIAlertController(title: "Choose Category", message: "Select a category below.", preferredStyle: .actionSheet)
+        
+        let titles: [String] = ["Hot", "New", "Top", "Rising"]
+        let filters: [RedditClient.SortByFilter] = [.hot, .new, .top, .rising]
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        for index in 0...3 {
+            let title = titles[index]
+            let filter = filters[index]
+            
+            let action = UIAlertAction(title: title, style: .default) { _ in
+                self.navigationItem.title = "\(title) - Contests"
+                self.downaloadContests(category: filter)
+            }
+            
+            alert.addAction(action)
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     fileprivate func showLoading(isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()
@@ -50,10 +78,10 @@ class ContestListViewController: UIViewController {
         }
     }
     
-    fileprivate func downaloadContests() {
+    fileprivate func downaloadContests(category: RedditClient.SortByFilter = .hot) {
         showLoading(isLoading: true)
         
-        RedditClient.shared.getListingOfPosts { posts, error in
+        RedditClient.shared.getListingOfPosts(filter: .hot) { posts, error in
             guard error == nil, let posts = posts else {
                 self.showLoading(isLoading: false)
                 self.showErrorAlert(message: "Failed to load posts.")
@@ -113,7 +141,8 @@ extension ContestListViewController: UITableViewDataSource {
                 case .success(let value):
                     post.image = value.image.pngData()
                 case .failure(let error):
-                    debugPrint(error)
+//                    debugPrint(error)
+                    break
                 }
             }
         }
