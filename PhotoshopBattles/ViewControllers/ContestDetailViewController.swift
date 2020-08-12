@@ -18,86 +18,146 @@ class ContestDetailViewController: ViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     var post: Post!
+    var contest: Contest?
     var comments = [Comment]()
-    
-    var fetchingCommentUrls: [String: String] = [:]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveContest))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(attemptToSaveContest))
     }
     
-    @objc func saveContest() {
+    func fetchExistingContestById() -> Contest? {
+        do {
+            let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
+            fetchRequest.fetchLimit = 1
+            fetchRequest.predicate = NSPredicate(format: "postId == %@", post.postId)
+            let result: [Contest] = try DataController.shared.viewContext.fetch(fetchRequest)
+            if let first = result.first {
+               print("result \(first) \(result)")
+               // do something with event
+                return first
+            } else {
+                print("not found")
+                return nil
+            }
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+    
+    @objc func attemptToSaveContest() {
+        let existingContest = fetchExistingContestById()
+        
+        if let existingContest = existingContest {
+            let title = "Overriding Contest"
+            let message = "Continunig will override the previous submissions"
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            let overrideAction = UIAlertAction(title: "Override", style: .default) { _ in
+                DataController.shared.viewContext.delete(existingContest)
+                self.saveContest()
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+            
+            alert.addAction(overrideAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        } else {
+            saveContest()
+        }
+    }
+    
+    func saveContest() {
         do {
             let contest = Contest(context: DataController.shared.viewContext)
             contest.image = post.image
             contest.postId = post.postId
             contest.permalink = post.permalink
             contest.createDate = Date()
-            try DataController.shared.viewContext.save()
-            
+            contest.title = post.title
 
-            let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
-            
-            let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-            
-            try fetchResultsController.performFetch()
-            
-            print("fetchResultsController?.fetchedObjects?.count: \(fetchResultsController.fetchedObjects?.count)")
+            let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
+
+            commentWithImages.forEach { comment in
+                let submission = Submission(context: DataController.shared.viewContext)
+
+                submission.id = comment.id
+                submission.image = comment.image
+                submission.author = comment.author
+                submission.createDate = Date()
+                submission.imageUrl = comment.imageUrl.absoluteString
+
+                submission.contest = contest
+            }
+
+            try DataController.shared.viewContext.save()
         } catch {
             debugPrint(error)
         }
         
-//        do {
-//
-//            for comment in comments {
-//                let submission = Submission(context: DataController.shared.viewContext)
-//
-//                submission.id = comment.id
-//                submission.image = comment.image
-//                submission.author = comment.author
-//                submission.createDate = Date()
-//                submission.contest = contest
-//            }
-//
-//            try DataController.shared.viewContext.save()
-//        } catch {
-//            debugPrint(error)
-//        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let imageUrl = URL(string: post.imageUrl)!
+        if post.isSaved == true, contest != nil, let data = post.image {
+            imageView.image = UIImage(data: data)
+            
+            fetchSavedComments()
+        } else {
+            let imageUrl = URL(string: post.imageUrl)!
+            
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(with: imageUrl)
+            
+            RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(commentsFromResponse:error:))
+        }
         
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: imageUrl)
+        navigationItem.title = post.title
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        
-        RedditClient.shared.getListingOfComments(permalink: post.permalink, handleCommentsLoaded(comments:error:))
     }
     
-    func handleCommentsLoaded(comments: [Comment]?, error: Error?) {
+    func fetchSavedComments() {
+        do {
+            let fetchRequest: NSFetchRequest<Submission> = Submission.fetchRequest()
+        
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
+            fetchRequest.predicate = NSPredicate(format: "contest == %@", contest!)
+            
+            let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: post!.postId)
+
+            try fetchResultsController.performFetch()
+
+            let submissions = fetchResultsController.fetchedObjects!
+
+            comments = submissions.map { submission in submission.toComment() }
+            collectionView.reloadData()
+        } catch {
+            debugPrint(error)
+        }
+    }
+    
+    func handleCommentsLoaded(commentsFromResponse: [Comment]?, error: Error?) {
         guard error == nil else {
             debugPrint("Error present: \(error!)")
             return
         }
 
-        guard let comments = comments else {
+        guard let commentsFromResponse = commentsFromResponse else {
             debugPrint("comments not loaded")
             return
         }
 
-        self.comments = comments.filter { $0.url != nil }
+        comments = commentsFromResponse.filter { $0.url != nil }
+        comments.insert(post.toComment(), at: 0)
         collectionView.reloadData()
         
-//        print("comments url: \(self.comments.map { $0.url })")
-        
-        for (index, comment) in self.comments.enumerated() {
+        for (index, comment) in comments.enumerated() {
             let url = comment.url
 
             if let urlString = url?.absoluteString  {
@@ -106,30 +166,23 @@ class ContestDetailViewController: ViewController {
                 if hasExtension {
                     comment.imageUrl = URL(string: urlString)!
                 } else if urlString.contains(ImgurClient.Constants.ALBUM_ENDPOINT) {
-                    self.fetchingCommentUrls[urlString] = "loading"
                     
                     let albumId = urlString.components(separatedBy: ImgurClient.Constants.ALBUM_ENDPOINT).last!
+                    
                     ImgurClient.shared.getAlbumImage(albumId: albumId) { link, error in
                         if let link = link {
                             self.comments[index].imageUrl = URL(string: link)!
                             self.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-                            self.fetchingCommentUrls[urlString] = "success"
-                        } else {
-                            self.fetchingCommentUrls[urlString] = "failed"
                         }
                         
                     }
                 } else if urlString.contains(ImgurClient.Constants.GALLERY_ENDPOINT) {
                     let galleryId = urlString.components(separatedBy: ImgurClient.Constants.GALLERY_ENDPOINT).last!
-                    self.fetchingCommentUrls[urlString] = "loading"
                     
                     ImgurClient.shared.getGalleryImage(galleryId: galleryId) { link, error in
                         if let link = link {
                             self.comments[index].imageUrl = URL(string: link)!
                             self.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-                            self.fetchingCommentUrls[urlString] = "success"
-                        } else {
-                            self.fetchingCommentUrls[urlString] = "failed"
                         }
                     }
                 } else {
@@ -143,6 +196,13 @@ class ContestDetailViewController: ViewController {
 extension ContestDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let comment = comments[indexPath.row]
+        
+        if comment.isPost == true {
+            navigationItem.title = comment.body
+        } else if let author = comment.author {
+            navigationItem.title = "by \(author)"
+        }
+        
         if let imageUrl = comment.imageUrl {
             imageView.kf.setImage(with: imageUrl)
         }
@@ -159,7 +219,9 @@ extension ContestDetailViewController: UICollectionViewDataSource {
 
         let comment = comments[indexPath.row]
         
-        if let imageUrl = comment.imageUrl {
+        if let image = comment.image {
+            cell.imageView.image = UIImage(data: image)
+        } else if let imageUrl = comment.imageUrl {
             cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "loading")) {result in
                 switch result {

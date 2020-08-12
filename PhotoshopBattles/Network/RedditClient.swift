@@ -76,19 +76,6 @@ class RedditClient {
                         return try decoder.decode(Post.self, from: data.rawData())
                     }
                     
-//                    let postDData = postData
-//                    .map { post in
-////                        guard let url = post.url else {
-////                            return post
-////                        }
-////
-//                        let urlString = post.url?.absoluteString
-////
-//                        print("urlString: \(post.urlurlString)")
-////
-//                        return post
-//                    }
-                    
                     completion(posts, nil)
                 } catch {
                     completion(nil, error)

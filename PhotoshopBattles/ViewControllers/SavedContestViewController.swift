@@ -12,18 +12,25 @@ import CoreData
 class SavedContestViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var label: UILabel!
     
     var fetchResultsController: NSFetchedResultsController<Contest>!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setLoadingState(isLoading: true)
         setupFlowLayout()
-        
+        fetchSavedContests()
+        setLoadingState(isLoading: false)
+    }
+    
+    func fetchSavedContests() {
         let fetchRequest: NSFetchRequest<Contest> = Contest.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
         
@@ -39,9 +46,28 @@ class SavedContestViewController: UIViewController {
         }
     }
     
+    func setLoadingState(isLoading: Bool) {
+        if isLoading == true {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+            
+            let hasSavedContest = fetchResultsController?.fetchedObjects?.count ?? 0 > 0
+            label.isHidden = hasSavedContest
+            
+            if hasSavedContest {
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
+        }
+    }
+    
     @objc fileprivate func clearAllSavedContests() {
+        setLoadingState(isLoading: true)
         guard let contests = fetchResultsController.fetchedObjects else {
             print("failed to delete contests!")
+            setLoadingState(isLoading: false)
             return
         }
         
@@ -50,6 +76,8 @@ class SavedContestViewController: UIViewController {
                 DataController.shared.viewContext.delete(contest)
                 try DataController.shared.viewContext.save()
             }
+            
+            setLoadingState(isLoading: false)
         } catch {
             debugPrint(error)
         }
@@ -72,6 +100,19 @@ class SavedContestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
+        collectionView.delegate = self
+    }
+}
+
+extension SavedContestViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let contest = fetchResultsController.object(at: indexPath)
+        let post = contest.toPost()
+        
+        let contestDetailViewController = storyboard?.instantiateViewController(withIdentifier: ContestDetailViewController.storyboardIdentifier) as! ContestDetailViewController
+        contestDetailViewController.post = post
+        contestDetailViewController.contest = contest
+        navigationController!.pushViewController(contestDetailViewController, animated: true)
     }
 }
 

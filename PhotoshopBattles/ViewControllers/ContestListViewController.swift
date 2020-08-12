@@ -12,8 +12,21 @@ import UIKit
 
 class ContestListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     var posts = [Post]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshContests)),
+            UIBarButtonItem(title: "Category", style: .plain, target: self, action: #selector(changeCategories)),
+        ]
+        
+        navigationItem.title = "Hot - Contests"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,17 +34,62 @@ class ContestListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        RedditClient.shared.getListingOfPosts { posts, error in
-            guard error == nil else {
-                debugPrint("Error present: \(error!)")
-                return
+        downaloadContests()
+    }
+    
+    @objc fileprivate func refreshContests() {
+        posts = []
+        downaloadContests()
+    }
+    
+    @objc fileprivate func changeCategories() {
+        let alert =  UIAlertController(title: "Choose Category", message: "Select a category below.", preferredStyle: .actionSheet)
+        
+        let titles: [String] = ["Hot", "New", "Top", "Rising"]
+        let filters: [RedditClient.SortByFilter] = [.hot, .new, .top, .rising]
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        for index in 0...3 {
+            let title = titles[index]
+            let filter = filters[index]
+            
+            let action = UIAlertAction(title: title, style: .default) { _ in
+                self.navigationItem.title = "\(title) - Contests"
+                self.downaloadContests(category: filter)
             }
-            guard let posts = posts else {
-                debugPrint("post not loaded")
+            
+            alert.addAction(action)
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    fileprivate func showLoading(isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            errorLabel.isHidden = true
+            tableView.isHidden = true
+        } else {
+            activityIndicator.stopAnimating()
+            
+            errorLabel.isHidden = posts.count > 0
+            tableView.isHidden = posts.count <= 0
+        }
+    }
+    
+    fileprivate func downaloadContests(category: RedditClient.SortByFilter = .hot) {
+        showLoading(isLoading: true)
+        
+        RedditClient.shared.getListingOfPosts(filter: .hot) { posts, error in
+            guard error == nil, let posts = posts else {
+                self.showLoading(isLoading: false)
+                self.showErrorAlert(message: "Failed to load posts.")
                 return
             }
             
             self.posts = posts
+            self.showLoading(isLoading: false)
             self.tableView.reloadData()
         }
     }
@@ -60,21 +118,31 @@ extension ContestListViewController: UITableViewDataSource {
         
         cell.titleLabel.text = post.title
         
-        if let upvotes = post.upvotes, let commentCount = post.commentCount {
-            cell.subtitleLabel.text = "Upvotes: \(upvotes) Comments: \(commentCount)"
+        if let upvotes = post.upvotes, let author = post.author {
+            cell.subtitleLabel.text = "by \(author) Upvotes: \(upvotes)"
         }
         
         if let imageView = cell.imageView {
             let imageUrl = URL(string: post.imageUrl)!
             let placeholderImage = UIImage(named: "loading")
             
+            imageView.contentMode = .scaleAspectFit
             imageView.kf.indicatorType = .activity
-            imageView.kf.setImage(with: imageUrl, placeholder: placeholderImage) { result in
+            imageView.kf.setImage(
+                with: imageUrl,
+                placeholder: placeholderImage,
+                options: [
+                    .processor(DownsamplingImageProcessor(size: imageView.frame.size)),
+                    .scaleFactor(UIScreen.main.scale),
+                    .cacheOriginalImage,
+                ]
+            ) { result in
                 switch result {
                 case .success(let value):
                     post.image = value.image.pngData()
                 case .failure(let error):
-                    debugPrint(error)
+//                    debugPrint(error)
+                    break
                 }
             }
         }
