@@ -19,6 +19,8 @@ class ContestListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshContests))
     }
     
     override func viewDidLoad() {
@@ -30,13 +32,21 @@ class ContestListViewController: UIViewController {
         downaloadContests()
     }
     
-    func showLoading(isLoading: Bool) {
+    @objc fileprivate func refreshContests() {
+        posts = []
+        downaloadContests()
+    }
+    
+    fileprivate func showLoading(isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()
             errorLabel.isHidden = true
+            tableView.isHidden = true
         } else {
             activityIndicator.stopAnimating()
+            
             errorLabel.isHidden = posts.count > 0
+            tableView.isHidden = posts.count <= 0
         }
     }
     
