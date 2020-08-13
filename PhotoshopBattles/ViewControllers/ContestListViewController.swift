@@ -20,10 +20,13 @@ class ContestListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        let categoryButton: UIButton = UIButton(type: UIButton.ButtonType.custom) as UIButton
+        categoryButton.setImage(UIImage(named: "categories"), for: [])
+        categoryButton.addTarget(self, action: #selector(changeCategories), for: UIControl.Event.touchUpInside)
+                
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshContests)),
-            UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeCategories)),
-//            UIBarButtonItem(title: "Category", style: .plain, target: self, action: #selector(changeCategories)),
+            UIBarButtonItem(customView: categoryButton)
         ]
         
         navigationItem.title = "Hot - Contests"
@@ -140,9 +143,11 @@ extension ContestListViewController: UITableViewDataSource {
             ) { result in
                 switch result {
                 case .success(let value):
-                    post.image = value.image.pngData()
+                    if post.image == nil {
+                        post.image = value.image.pngData()
+                    }
                 case .failure(let error):
-//                    debugPrint(error)
+                    debugPrint(error)
                     break
                 }
             }
