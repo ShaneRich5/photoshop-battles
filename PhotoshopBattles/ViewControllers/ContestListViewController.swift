@@ -21,8 +21,9 @@ class ContestListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshContests)),
-            UIBarButtonItem(title: "Category", style: .plain, target: self, action: #selector(changeCategories)),
+            UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshContests)),
+            UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeCategories)),
+//            UIBarButtonItem(title: "Category", style: .plain, target: self, action: #selector(changeCategories)),
         ]
         
         navigationItem.title = "Hot - Contests"
@@ -81,7 +82,7 @@ class ContestListViewController: UIViewController {
     fileprivate func downaloadContests(category: RedditClient.SortByFilter = .hot) {
         showLoading(isLoading: true)
         
-        RedditClient.shared.getListingOfPosts(filter: .hot) { posts, error in
+        RedditClient.shared.getListingOfPosts(filter: category) { posts, error in
             guard error == nil, let posts = posts else {
                 self.showLoading(isLoading: false)
                 self.showErrorAlert(message: "Failed to load posts.")
@@ -124,7 +125,7 @@ extension ContestListViewController: UITableViewDataSource {
         
         if let imageView = cell.imageView {
             let imageUrl = URL(string: post.imageUrl)!
-            let placeholderImage = UIImage(named: "loading")
+            let placeholderImage = UIImage(named: "placeholder")
             
             imageView.contentMode = .scaleAspectFit
             imageView.kf.indicatorType = .activity

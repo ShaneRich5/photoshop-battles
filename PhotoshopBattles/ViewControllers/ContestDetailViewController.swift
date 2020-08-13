@@ -23,7 +23,22 @@ class ContestDetailViewController: ViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(attemptToSaveContest))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(attemptToSaveContest)),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareContest)),
+        ]
+    }
+    
+    @objc func shareContest() {
+//        print(post.image)
+//
+        let url = URL(string: "https://www.reddit.com" + post.permalink)!
+//
+//        let items: [Any] = [url]
+//        let items = ["This app is my favorite"]
+
+        let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(controller, animated: true)
     }
     
     func fetchExistingContestById() -> Contest? {
