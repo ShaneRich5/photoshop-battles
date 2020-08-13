@@ -16,6 +16,7 @@ extension Contest {
         post.postId = postId
         post.upvotes = Int(upvotes)
         post.permalink = permalink
+        post.imageUrl = imageUrl
         post.isSaved = true
         
         return post

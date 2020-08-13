@@ -15,6 +15,7 @@ class Post: Decodable {
     var postId: String!
     var imageUrl: String!
     var permalink: String!
+    var thumbnail: String!
     var image: Data?
     var isSaved = false
     
@@ -25,6 +26,7 @@ class Post: Decodable {
         case imageUrl = "url"
         case author = "author"
         case permalink = "permalink"
+        case thumbnail = "thumbnail"
     }
     
     func toComment() -> Comment {
@@ -33,6 +35,7 @@ class Post: Decodable {
         comment.id = postId
         comment.image = image
         comment.author = author
+        print("toComment: \(imageUrl)")
         comment.imageUrl = URL(string: imageUrl)!
         comment.body = title
         comment.isPost = true

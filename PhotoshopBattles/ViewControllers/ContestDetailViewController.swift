@@ -93,6 +93,9 @@ class ContestDetailViewController: ViewController {
             contest.permalink = post.permalink
             contest.createDate = Date()
             contest.title = post.title
+            
+            print("post imageUrl: \(contest.imageUrl) \(post.imageUrl!) \(post)")
+            contest.imageUrl = post.imageUrl!
 
             let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
 
@@ -151,6 +154,7 @@ class ContestDetailViewController: ViewController {
             let submissions = fetchResultsController.fetchedObjects!
 
             comments = submissions.map { submission in submission.toComment() }
+            comments.insert(post.toComment(), at: 0)
             collectionView.reloadData()
         } catch {
             debugPrint(error)
@@ -238,7 +242,7 @@ extension ContestDetailViewController: UICollectionViewDataSource {
             cell.imageView.image = UIImage(data: image)
         } else if let imageUrl = comment.imageUrl {
             cell.imageView.kf.indicatorType = .activity
-            cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "loading")) {result in
+            cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "placeholder")) {result in
                 switch result {
                 case .success(let value):
                     comment.image = value.image.pngData()

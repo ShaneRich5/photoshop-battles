@@ -127,6 +127,7 @@ extension ContestListViewController: UITableViewDataSource {
         }
         
         if let imageView = cell.imageView {
+            print(post.imageUrl)
             let imageUrl = URL(string: post.imageUrl)!
             let placeholderImage = UIImage(named: "placeholder")
             
@@ -136,7 +137,7 @@ extension ContestListViewController: UITableViewDataSource {
                 with: imageUrl,
                 placeholder: placeholderImage,
                 options: [
-                    .processor(DownsamplingImageProcessor(size: imageView.frame.size)),
+//                    .processor(DownsamplingImageProcessor(size: imageView.frame.size)),
                     .scaleFactor(UIScreen.main.scale),
                     .cacheOriginalImage,
                 ]
@@ -148,6 +149,7 @@ extension ContestListViewController: UITableViewDataSource {
                     }
                 case .failure(let error):
                     debugPrint(error)
+                    print(error.errorDescription)
                     break
                 }
             }
