@@ -30,13 +30,7 @@ class ContestDetailViewController: ViewController {
     }
     
     @objc func shareContest() {
-//        print(post.image)
-//
         let url = URL(string: "https://www.reddit.com" + post.permalink)!
-//
-//        let items: [Any] = [url]
-//        let items = ["This app is my favorite"]
-
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         present(controller, animated: true)
     }
@@ -47,10 +41,8 @@ class ContestDetailViewController: ViewController {
             fetchRequest.fetchLimit = 1
             fetchRequest.predicate = NSPredicate(format: "postId == %@", post.postId)
             let result: [Contest] = try DataController.shared.viewContext.fetch(fetchRequest)
-            if let first = result.first {
-               print("result \(first) \(result)")
-               // do something with event
-                return first
+            if let firstContest = result.first {
+                return firstContest
             } else {
                 print("not found")
                 return nil
@@ -93,8 +85,6 @@ class ContestDetailViewController: ViewController {
             contest.permalink = post.permalink
             contest.createDate = Date()
             contest.title = post.title
-            
-            print("post imageUrl: \(contest.imageUrl) \(post.imageUrl!) \(post)")
             contest.imageUrl = post.imageUrl!
 
             let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
