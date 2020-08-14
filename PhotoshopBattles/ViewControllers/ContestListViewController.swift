@@ -30,7 +30,8 @@ class ContestListViewController: UIViewController {
             UIBarButtonItem(customView: categoryButton)
         ]
         
-        navigationItem.title = "Hot - Contests"
+        let filter = Settings.shared.getFilter()
+        navigationItem.title = "\(filter.rawValue.capitalize()) - Contests"
     }
     
     override func viewDidLoad() {
@@ -52,12 +53,13 @@ class ContestListViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-        for category in filters {
-            let title = category.rawValue.capitalize()
+        for filter in filters {
+            let title = filter.rawValue.capitalize()
 
             let action = UIAlertAction(title: title, style: .default) { _ in
+                Settings.shared.setFilter(filter: filter)
                 self.navigationItem.title = "\(title) - Contests"
-                self.downaloadContests(category: category)
+                self.downaloadContests()
             }
 
             alert.addAction(action)
@@ -79,10 +81,12 @@ class ContestListViewController: UIViewController {
         }
     }
     
-    fileprivate func downaloadContests(category: RedditClient.SortByFilter = .hot) {
+    fileprivate func downaloadContests() {
         showLoading(isLoading: true)
         
-        RedditClient.shared.getListingOfPosts(filter: category) { posts, error in
+        let filter = Settings.shared.getFilter()
+        
+        RedditClient.shared.getListingOfPosts(filter: filter) { posts, error in
             guard error == nil, let posts = posts else {
                 self.showLoading(isLoading: false)
                 self.showErrorAlert(message: "Failed to load posts.")
