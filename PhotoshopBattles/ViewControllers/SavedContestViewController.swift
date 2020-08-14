@@ -111,8 +111,6 @@ extension SavedContestViewController: UICollectionViewDelegate {
         let post = contest.toPost()
         
         let contestDetailViewController = storyboard?.instantiateViewController(withIdentifier: ContestDetailViewController.storyboardIdentifier) as! ContestDetailViewController
-        
-        print("collectionView clicked")
         contestDetailViewController.post = post
         contestDetailViewController.contest = contest
         navigationController!.pushViewController(contestDetailViewController, animated: true)

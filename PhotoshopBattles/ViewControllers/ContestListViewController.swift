@@ -16,6 +16,7 @@ class ContestListViewController: UIViewController {
     @IBOutlet weak var errorLabel: UILabel!
     
     var posts = [Post]()
+    let filters: [RedditClient.SortByFilter] = [.hot, .new, .top, .rising]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,23 +50,19 @@ class ContestListViewController: UIViewController {
     @objc fileprivate func changeCategories() {
         let alert =  UIAlertController(title: "Choose Category", message: "Select a category below.", preferredStyle: .actionSheet)
         
-        let titles: [String] = ["Hot", "New", "Top", "Rising"]
-        let filters: [RedditClient.SortByFilter] = [.hot, .new, .top, .rising]
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        for index in 0...3 {
-            let title = titles[index]
-            let filter = filters[index]
-            
+
+        for category in filters {
+            let title = category.rawValue.capitalize()
+
             let action = UIAlertAction(title: title, style: .default) { _ in
                 self.navigationItem.title = "\(title) - Contests"
-                self.downaloadContests(category: filter)
+                self.downaloadContests(category: category)
             }
-            
+
             alert.addAction(action)
         }
-        
+
         present(alert, animated: true, completion: nil)
     }
     
@@ -127,7 +124,6 @@ extension ContestListViewController: UITableViewDataSource {
         }
         
         if let imageView = cell.imageView {
-            print(post.imageUrl)
             let imageUrl = URL(string: post.imageUrl)!
             let placeholderImage = UIImage(named: "placeholder")
             
