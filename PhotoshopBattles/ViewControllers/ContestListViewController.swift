@@ -160,8 +160,6 @@ extension ContestListViewController: UITableViewDataSource {
                         post.image = value.image.pngData()
                     }
                 case .failure(let error):
-                    debugPrint(error)
-                    print(error.errorDescription)
                     break
                 }
             }

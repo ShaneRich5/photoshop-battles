@@ -11,7 +11,7 @@ import Kingfisher
 import UIKit
 import CoreData
 
-class ContestDetailViewController: ViewController {
+class ContestDetailViewController: UIViewController {
     static let storyboardIdentifier = "ContestDetailViewController"
     
     @IBOutlet weak var imageView: UIImageView!
@@ -44,11 +44,9 @@ class ContestDetailViewController: ViewController {
             if let firstContest = result.first {
                 return firstContest
             } else {
-                print("not found")
                 return nil
             }
         } catch {
-            print(error)
             return nil
         }
     }
@@ -103,7 +101,7 @@ class ContestDetailViewController: ViewController {
 
             try DataController.shared.viewContext.save()
         } catch {
-            debugPrint(error)
+            showErrorAlert(message: "Failed to save contest")
         }
         
     }
@@ -147,18 +145,13 @@ class ContestDetailViewController: ViewController {
             comments.insert(post.toComment(), at: 0)
             collectionView.reloadData()
         } catch {
-            debugPrint(error)
+            showErrorAlert(message: "Error requesting submissions")
         }
     }
     
     func handleCommentsLoaded(commentsFromResponse: [Comment]?, error: Error?) {
-        guard error == nil else {
-            debugPrint("Error present: \(error!)")
-            return
-        }
-
-        guard let commentsFromResponse = commentsFromResponse else {
-            debugPrint("comments not loaded")
+        guard error == nil, let commentsFromResponse = commentsFromResponse else {
+            showErrorAlert(message: "Failed to load submissions")
             return
         }
 
@@ -237,7 +230,7 @@ extension ContestDetailViewController: UICollectionViewDataSource {
                 case .success(let value):
                     comment.image = value.image.pngData()
                 case .failure(let error):
-                    print("Job failed: \(error.localizedDescription)")
+                    break
                 }
             }
         }

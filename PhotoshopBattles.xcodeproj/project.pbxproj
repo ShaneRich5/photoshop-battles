@@ -31,7 +31,6 @@
 		E7DBCAF424DB3CE100B7E397 /* ImgurClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DBCAF324DB3CE100B7E397 /* ImgurClient.swift */; };
 		E7E94E0B24D28774009B29BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0A24D28774009B29BA /* AppDelegate.swift */; };
 		E7E94E0D24D28774009B29BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0C24D28774009B29BA /* SceneDelegate.swift */; };
-		E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E94E0E24D28774009B29BA /* ViewController.swift */; };
 		E7E94E1224D28774009B29BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7E94E1024D28774009B29BA /* Main.storyboard */; };
 		E7E94E1424D28777009B29BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7E94E1324D28777009B29BA /* Assets.xcassets */; };
 		E7E94E1724D28777009B29BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7E94E1524D28777009B29BA /* LaunchScreen.storyboard */; };
@@ -60,7 +59,6 @@
 		E7E94E0724D28774009B29BA /* PhotoshopBattles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoshopBattles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7E94E0A24D28774009B29BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7E94E0C24D28774009B29BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E7E94E0E24D28774009B29BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E7E94E1124D28774009B29BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7E94E1324D28777009B29BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7E94E1624D28777009B29BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -145,9 +143,10 @@
 		E7A94A9A24E09BDA00DEA089 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */,
+				E7B2FE6324DD147100FE88B7 /* DataController.swift */,
 				E7A94A9B24E09BF700DEA089 /* Contest+Extras.swift */,
 				E7A94A9D24E0F4E600DEA089 /* Submission+Extras.swift */,
+				E712E99A24DE05AC003B88DA /* PhotoshopBattles.xcdatamodeld */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -187,9 +186,7 @@
 				E759060F24D3BC6E004168FC /* Network */,
 				E7E94E0A24D28774009B29BA /* AppDelegate.swift */,
 				E7E94E0C24D28774009B29BA /* SceneDelegate.swift */,
-				E7E94E0E24D28774009B29BA /* ViewController.swift */,
 				E7E94E1824D28777009B29BA /* Info.plist */,
-				E7B2FE6324DD147100FE88B7 /* DataController.swift */,
 			);
 			path = PhotoshopBattles;
 			sourceTree = "<group>";
@@ -278,7 +275,6 @@
 				E7DBA98E24D5609D008D97DC /* RedditClient.swift in Sources */,
 				E7A94A9C24E09BF700DEA089 /* Contest+Extras.swift in Sources */,
 				E75E9D5924E1C0B6003B1900 /* UIViewController+Extras.swift in Sources */,
-				E7E94E0F24D28774009B29BA /* ViewController.swift in Sources */,
 				E77E4EEE24D634E5006209B6 /* AccessTokenResponse.swift in Sources */,
 				E77E4EF024D66315006209B6 /* RedditClient+Extras.swift in Sources */,
 				E72E781624D8D1E4006E79FF /* String+Extras.swift in Sources */,
