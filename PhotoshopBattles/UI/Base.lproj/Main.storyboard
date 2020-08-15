@@ -23,7 +23,7 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostTableViewCell" textLabel="mcF-9x-9bV" detailTextLabel="yeF-C5-Iix" style="IBUITableViewCellStyleSubtitle" id="Emo-6o-EkU" customClass="PostTableViewCell" customModule="PhotoshopBattles" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Emo-6o-EkU" id="xhc-fA-5im">
+                                        <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Emo-6o-EkU" id="xhc-fA-5im">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -265,7 +265,7 @@
         <scene sceneID="Gdg-hO-xTb">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sNU-U0-aes" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Saved" id="RkG-Dw-oSB"/>
+                    <tabBarItem key="tabBarItem" title="Saved" image="star.fill" catalog="system" id="RkG-Dw-oSB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6Sb-xl-376">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -284,7 +284,7 @@
         <scene sceneID="5Hj-vW-D1s">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NO1-xe-LkJ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Contests" id="4Tr-u7-iRM" userLabel="Contests"/>
+                    <tabBarItem key="tabBarItem" title="Contests" image="photo.on.rectangle" catalog="system" id="4Tr-u7-iRM" userLabel="Contests"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RpF-hs-jmM">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -300,4 +300,8 @@
             <point key="canvasLocation" x="2244.927536231884" y="-323.4375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="photo.on.rectangle" catalog="system" width="128" height="98"/>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
+    </resources>
 </document>

@@ -23,4 +23,8 @@ extension String {
         }
         return urls
     }
+    
+    func capitalize() -> String {
+        return prefix(1).uppercased() + lowercased().dropFirst()
+    }
 }

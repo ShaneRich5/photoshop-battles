@@ -19,7 +19,8 @@ class SavedContestViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(clearAllSavedContests))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,7 +57,7 @@ class SavedContestViewController: UIViewController {
             label.isHidden = hasSavedContest
             
             if hasSavedContest {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(clearAllSavedContests))
+                navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(clearAllSavedContests))
             } else {
                 navigationItem.rightBarButtonItem = nil
             }

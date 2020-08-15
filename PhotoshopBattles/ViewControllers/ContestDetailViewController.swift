@@ -23,7 +23,16 @@ class ContestDetailViewController: ViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(attemptToSaveContest))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(attemptToSaveContest)),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareContest)),
+        ]
+    }
+    
+    @objc func shareContest() {
+        let url = URL(string: "https://www.reddit.com" + post.permalink)!
+        let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(controller, animated: true)
     }
     
     func fetchExistingContestById() -> Contest? {
@@ -32,10 +41,8 @@ class ContestDetailViewController: ViewController {
             fetchRequest.fetchLimit = 1
             fetchRequest.predicate = NSPredicate(format: "postId == %@", post.postId)
             let result: [Contest] = try DataController.shared.viewContext.fetch(fetchRequest)
-            if let first = result.first {
-               print("result \(first) \(result)")
-               // do something with event
-                return first
+            if let firstContest = result.first {
+                return firstContest
             } else {
                 print("not found")
                 return nil
@@ -78,6 +85,7 @@ class ContestDetailViewController: ViewController {
             contest.permalink = post.permalink
             contest.createDate = Date()
             contest.title = post.title
+            contest.imageUrl = post.imageUrl!
 
             let commentWithImages = comments.filter { comment in comment.imageUrl != nil && !comment.isPost }
 
@@ -136,6 +144,7 @@ class ContestDetailViewController: ViewController {
             let submissions = fetchResultsController.fetchedObjects!
 
             comments = submissions.map { submission in submission.toComment() }
+            comments.insert(post.toComment(), at: 0)
             collectionView.reloadData()
         } catch {
             debugPrint(error)
@@ -223,7 +232,7 @@ extension ContestDetailViewController: UICollectionViewDataSource {
             cell.imageView.image = UIImage(data: image)
         } else if let imageUrl = comment.imageUrl {
             cell.imageView.kf.indicatorType = .activity
-            cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "loading")) {result in
+            cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "placeholder")) {result in
                 switch result {
                 case .success(let value):
                     comment.image = value.image.pngData()
