@@ -43,7 +43,7 @@ class SavedContestViewController: UIViewController {
             try fetchResultsController.performFetch()
             collectionView.reloadData()
         } catch {
-            debugPrint(error)
+            showErrorAlert(message: "Failed to load contests")
         }
     }
     
@@ -67,7 +67,7 @@ class SavedContestViewController: UIViewController {
     @objc fileprivate func clearAllSavedContests() {
         setLoadingState(isLoading: true)
         guard let contests = fetchResultsController.fetchedObjects else {
-            print("failed to delete contests!")
+            showErrorAlert(message: "Failed to delete all saved contests")
             setLoadingState(isLoading: false)
             return
         }
@@ -80,7 +80,7 @@ class SavedContestViewController: UIViewController {
             
             setLoadingState(isLoading: false)
         } catch {
-            debugPrint(error)
+            showErrorAlert(message: "An error occured while deleting one or more contests.")
         }
     }
     

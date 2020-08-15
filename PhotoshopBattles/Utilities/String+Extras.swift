@@ -18,9 +18,8 @@ extension String {
                     urls.append(url)
                 }
             })
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+        } catch { }
+        
         return urls
     }
     

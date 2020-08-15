@@ -53,11 +53,6 @@ class ImgurClient {
     
     func getGalleryImage(galleryId: String, _ completion: @escaping (String?, Error?) -> Void) {
         let url = Endpoint.gallery(galleryId).url
-        
-        if galleryId == "5e5lOP" {
-            print()
-        }
-        
         getImageForUrl(url, completion)
     }
     
@@ -72,10 +67,6 @@ class ImgurClient {
             case .success(let value):
                 let json = JSON(value)
                 let link = json["data"][0]["link"].stringValue
-                
-                if (url.absoluteString == "https://imgur.com/gallery/5e5lOP") {
-                    print("getImageForUrl \(url) \(link)")
-                }
                 
                 completion(link, nil)
             case .failure(let error):

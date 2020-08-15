@@ -81,7 +81,6 @@ class RedditClient {
                     completion(nil, error)
                 }
             case .failure(let error):
-                debugPrint(error)
                 completion(nil, error)
             }
         }
@@ -96,8 +95,6 @@ class RedditClient {
                 do {
                     let json = JSON(value)
                     let decoder = JSONDecoder()
-                    
-                    print("children count: \(json[1]["data"]["children"].arrayValue.count)")
                     
                     var comments: [Comment] = []
                     
