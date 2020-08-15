@@ -15,18 +15,23 @@ class ContestListViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var errorLabel: UILabel!
     
+    private let refreshControl = UIRefreshControl()
+    
     var posts = [Post]()
     let filters: [RedditClient.SortByFilter] = [.hot, .new, .top, .rising]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        tableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(refreshContests(_:)), for: .valueChanged)
+        
         let categoryButton: UIButton = UIButton(type: UIButton.ButtonType.custom) as UIButton
         categoryButton.setImage(UIImage(named: "categories"), for: [])
         categoryButton.addTarget(self, action: #selector(changeCategories), for: UIControl.Event.touchUpInside)
                 
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshContests)),
+//            UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshContests)),
             UIBarButtonItem(customView: categoryButton)
         ]
         
@@ -43,9 +48,8 @@ class ContestListViewController: UIViewController {
         downaloadContests()
     }
     
-    @objc fileprivate func refreshContests() {
-        posts = []
-        downaloadContests()
+    @objc fileprivate func refreshContests(_ sender: Any) {
+        downaloadContests(isRefreshing: true)
     }
     
     @objc fileprivate func changeCategories() {
@@ -68,11 +72,12 @@ class ContestListViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    fileprivate func showLoading(isLoading: Bool) {
+    fileprivate func showLoading(isLoading: Bool, isRefreshing: Bool = false) {
         if isLoading {
-            activityIndicator.startAnimating()
+            if !isRefreshing {
+                activityIndicator.startAnimating()
+            }
             errorLabel.isHidden = true
-            tableView.isHidden = true
         } else {
             activityIndicator.stopAnimating()
             
@@ -81,8 +86,13 @@ class ContestListViewController: UIViewController {
         }
     }
     
-    fileprivate func downaloadContests() {
-        showLoading(isLoading: true)
+    fileprivate func downaloadContests(isRefreshing: Bool = false) {
+        showLoading(isLoading: true, isRefreshing: isRefreshing)
+        
+        if !isRefreshing {
+            posts = []
+            tableView.reloadData()
+        }
         
         let filter = Settings.shared.getFilter()
         
@@ -90,11 +100,13 @@ class ContestListViewController: UIViewController {
             guard error == nil, let posts = posts else {
                 self.showLoading(isLoading: false)
                 self.showErrorAlert(message: "Failed to load posts.")
+                self.refreshControl.endRefreshing()
                 return
             }
             
             self.posts = posts
             self.showLoading(isLoading: false)
+            self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
     }
