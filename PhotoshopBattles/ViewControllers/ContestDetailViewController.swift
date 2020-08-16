@@ -229,7 +229,7 @@ extension ContestDetailViewController: UICollectionViewDataSource {
                 switch result {
                 case .success(let value):
                     comment.image = value.image.pngData()
-                case .failure(let error):
+                case .failure:
                     break
                 }
             }

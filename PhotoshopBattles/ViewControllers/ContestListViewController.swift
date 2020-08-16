@@ -159,7 +159,7 @@ extension ContestListViewController: UITableViewDataSource {
                     if post.image == nil {
                         post.image = value.image.pngData()
                     }
-                case .failure(let error):
+                case .failure:
                     break
                 }
             }
