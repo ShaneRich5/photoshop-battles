@@ -16,10 +16,6 @@ Photoshop Battles is an iOS application that allows users to browse constests fr
    ```
    git clone git@github.com:ShaneRich5/photoshop-battles.git
    ```
-1. Install the CocoaPods
-   ```
-   pod install
-   ```
 1. Open the folder Xcode and build the app.
 
 
