@@ -281,11 +281,11 @@
             </objects>
             <point key="canvasLocation" x="2250.7246376811595" y="375.66964285714283"/>
         </scene>
-        <!--Contests-->
+        <!--Discover-->
         <scene sceneID="5Hj-vW-D1s">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NO1-xe-LkJ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Contests" image="photo.on.rectangle" catalog="system" id="4Tr-u7-iRM" userLabel="Contests"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="photo.on.rectangle" catalog="system" id="4Tr-u7-iRM" userLabel="Contests"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RpF-hs-jmM">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
