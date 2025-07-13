@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { fetchRedditPosts } from "@/lib/api-clients/reddit";
 
 export async function GET() {
-  return NextResponse.json({ message: "Hello, World!" });
+  const results = await fetchRedditPosts();
+  return NextResponse.json({ message: "Hello, World!", data: results });
 }
