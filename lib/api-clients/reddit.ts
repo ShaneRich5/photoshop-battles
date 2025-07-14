@@ -29,7 +29,7 @@ const fetchWithHeaders = async (
 ): Promise<Response> => {
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
-    Authorization: `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+    "User-Agent": "PhotoshopBattles Feed/0.1",
   };
 
   const mergedOptions: RequestInit = {
