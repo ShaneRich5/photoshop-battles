@@ -78,7 +78,6 @@ export const convertImgurAlbumSubmissionToDirectLink = async (
   const { imageUrl } = submission;
   const albumHash = imageUrl.split("/").pop();
   const url = await fetchAlbumImageUrl(albumHash);
-  // console.log("url:", url, "imageUrl:", imageUrl);
 
   return { ...submission, imageUrl: url };
 };
@@ -120,8 +119,6 @@ const fetchAndAppendSubmissionImageUrl = async (
     }
   } catch (error) {
     console.error("Error fetching image URL for submission:", error);
-    console.log("urlType:", urlType);
-    console.log("imageUrl:", imageUrl);
     return Promise.resolve(submission);
   }
   return Promise.resolve(submission);
@@ -132,13 +129,9 @@ export async function fetchRedditPostById(postId: string) {
   const result = await fetch(url);
   const response = await result.json();
 
-  // console.log("response:", response);
-
   const postData = response[0];
   const commentData = response[1];
 
-  // console.log("postData:", postData);
-  // console.log("commentData:", commentData);
   // const [postData, commentData] = response;
   const {
     data: {
