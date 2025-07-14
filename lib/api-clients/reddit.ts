@@ -118,7 +118,10 @@ const fetchAndAppendSubmissionImageUrl = async (
       return Promise.resolve(submission);
     }
   } catch (error) {
-    console.error("Error fetching image URL for submission:", error);
+    console.error(
+      `Error fetching image URL for submission: ${submission.id}`,
+      error
+    );
     return Promise.resolve(submission);
   }
   return Promise.resolve(submission);
