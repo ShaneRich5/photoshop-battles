@@ -23,3 +23,9 @@ export async function fetchRedditPosts() {
   const data = await result.json();
   return normalizeRedditPostListResponseToContest(data);
 }
+
+export async function fetchRedditPostById(postId: string) {
+  const url = `${REDDIT_URL}${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}${JSON_EXTENSION}`;
+  const result = await fetch(url);
+  return await result.json();
+}
