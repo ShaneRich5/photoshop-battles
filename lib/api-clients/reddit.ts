@@ -135,7 +135,6 @@ export async function fetchRedditPostById(postId: string) {
   const postData = response[0];
   const commentData = response[1];
 
-  // const [postData, commentData] = response;
   const {
     data: {
       children: [{ data: post }],
@@ -152,23 +151,9 @@ export async function fetchRedditPostById(postId: string) {
     .map((nestedData: any) => nestedData.data)
     .map((comment: any) => buildDefaultSubmissionFromRedditComment(comment))
     .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission))
-
     .slice(1);
-  // .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission));
 
   const submissions = await Promise.all(unformattedSubmissions);
 
-  // return { contest, submissions };
   return { contest, submissions };
-  // return [postData, commentData];
-
-  // const {
-  //   data: {
-  //     children: [{ data: post }],
-  //   },
-  // } = postData;
-
-  // const contest = normalizeRedditPostDetailResponseToContestDetail(post);
-
-  // return contest;
 }
