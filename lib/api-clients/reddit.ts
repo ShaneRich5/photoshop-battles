@@ -10,7 +10,7 @@ import {
 } from "@/lib/utils";
 
 const REDDIT_URL = "https://www.reddit.com";
-const PHOTOSHOP_BATTLES_ENDPOINT = "/r/photoshopbattles";
+const PHOTOSHOP_BATTLES_ENDPOINT = "r/photoshopbattles";
 const JSON_EXTENSION = ".json";
 
 interface Contest {
@@ -23,6 +23,26 @@ interface Contest {
   author?: string; // Optional, as not all posts may have an author
 }
 
+const fetchWithHeaders = async (
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<Response> => {
+  const defaultHeaders: HeadersInit = {
+    "Content-Type": "application/json",
+    Authorization: `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+  };
+
+  const mergedOptions: RequestInit = {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...(options.headers || {}),
+    },
+  };
+
+  return fetch(`https://www.reddit.com/${endpoint}.json`, mergedOptions);
+};
+
 const normalizeRedditPostListResponseToSummarizedContestList = (
   redditPostListResponse: any
 ): Contest[] => {
@@ -34,8 +54,8 @@ const normalizeRedditPostListResponseToSummarizedContestList = (
 };
 
 export async function fetchRedditPosts() {
-  const url = `${REDDIT_URL}${PHOTOSHOP_BATTLES_ENDPOINT}${JSON_EXTENSION}`;
-  const result = await fetch(url);
+  const endpoint = `${PHOTOSHOP_BATTLES_ENDPOINT}`;
+  const result = await fetchWithHeaders(endpoint);
   const data = await result.json();
   return normalizeRedditPostListResponseToSummarizedContestList(data);
 }
@@ -128,8 +148,8 @@ const fetchAndAppendSubmissionImageUrl = async (
 };
 
 export async function fetchRedditPostById(postId: string) {
-  const url = `${REDDIT_URL}${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}${JSON_EXTENSION}`;
-  const result = await fetch(url);
+  const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
+  const result = await fetchWithHeaders(url);
   const response = await result.json();
 
   const postData = response[0];
