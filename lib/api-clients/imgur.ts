@@ -25,9 +25,7 @@ export const fetchAlbumImageUrl = async (
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/album/${albumHash}/images`);
   const {
-    data: {
-      data: [{ link }],
-    },
+    data: [{ link }],
   } = await response.json();
   return link;
 };
@@ -39,9 +37,7 @@ export const fetchGalleryImageUrl = async (
     `/gallery/album/${galleryHash}/images`
   );
   const {
-    data: {
-      data: [{ link }],
-    },
+    data: [{ link }],
   } = await response.json();
   return link;
 };
@@ -51,9 +47,7 @@ export const fetchSingleImageUrl = async (
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/image/${imageHash}`);
   const {
-    data: {
-      data: { link },
-    },
+    data: { link },
   } = await response.json();
   return link;
 };

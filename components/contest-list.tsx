@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { PiRedditLogo } from "react-icons/pi";
@@ -26,18 +27,20 @@ const ContestList = () => {
             key={contest.id}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
-            <img
-              src={contest.imageUrl}
-              alt={contest.title}
-              className="w-full h-48 object-cover"
-            />
+            <Link href={`/contests/${contest.id}`} className="block">
+              <img
+                src={contest.imageUrl}
+                alt={contest.title}
+                className="w-full h-48 object-cover"
+              />
+            </Link>
           </div>
           <div className="p-2">
             <h2 className="text-md font-semibold mb-2">
               {contest.title.replace("PsBattle: ", "")}
             </h2>
 
-            <ul className="flex space-x-2">
+            {/* <ul className="flex space-x-2">
               <li className="flex items-center mb-2 border-2 border-gray-300 rounded-full px-3 py-1">
                 <FaRegCommentDots className="inline mr-2" />
                 <span className="text-gray-600">{contest.commentCount}</span>
@@ -57,7 +60,7 @@ const ContestList = () => {
                   <span className="text-gray-600">Reddit</span>
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       ))}
