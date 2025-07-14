@@ -2,9 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { FaRegCommentDots } from "react-icons/fa";
-import { FaRegThumbsUp } from "react-icons/fa";
-import { PiRedditLogo } from "react-icons/pi";
 
 const ContestList = () => {
   const { data } = useQuery({

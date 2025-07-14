@@ -1,4 +1,5 @@
 import { fetchRedditPostById } from "@/lib/api-clients/reddit";
+import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
 
 interface ContestDetailPageProps {
@@ -17,12 +18,12 @@ export default async function ContestDetailPage({
     <div className="pt-4">
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="absolute top-0 left-0 p-4">
-          <a href="/" className="flex items-center mb-6">
+          <Link href="/" className="flex items-center mb-6">
             <MdArrowBack className="text-xl cursor-pointer" />
             <span className="text-gray-600 ml-2 text-lg font-bold">
               Back to Contests
             </span>
-          </a>
+          </Link>
         </div>
         <div className="flex flex-col items-center">
           <img
