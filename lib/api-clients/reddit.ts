@@ -65,6 +65,7 @@ const buildDefaultSubmissionFromRedditComment = (comment: any) => {
     body,
     title,
     urlType,
+    imageUrl,
     author: comment.author ?? null,
     permalink: comment.permalink ?? null,
     upvoteCount: comment.ups ?? null,
@@ -98,6 +99,8 @@ export const convertImgurDirectSubmissionToDirectLink = async (
   const imageHash = imageUrl.split("/").pop();
   const url = await fetchSingleImageUrl(imageHash);
 
+  console.log("Converted Imgur direct submission to direct link:", url);
+
   return { ...submission, imageUrl: url };
 };
 
@@ -106,19 +109,25 @@ const fetchAndAppendSubmissionImageUrl = async (
 ): Promise<any> => {
   const { imageUrl, urlType } = submission;
 
-  // try {
-  //   if (urlType === "imgur-album") {
-  //     return await convertImgurAlbumSubmissionToDirectLink(submission);
-  //   } else if (urlType === "imgur-gallery") {
-  //     return await convertImgurGallerySubmissionToDirectLink(submission);
-  //   } else if (urlType === "imgur-direct") {
-  //     return await convertImgurDirectSubmissionToDirectLink(submission);
-  //   } else if (urlType === "direct-link" || !imageUrl) {
-  //     return Promise.resolve(submission);
-  //   }
-  // } catch (error) {
-  //   return Promise.resolve(submission);
-  // }
+  console.log("Fetching and appending image URL for submission:", {
+    imageUrl,
+    urlType,
+    submission,
+  });
+
+  try {
+    if (urlType === "imgur-album") {
+      return await convertImgurAlbumSubmissionToDirectLink(submission);
+    } else if (urlType === "imgur-gallery") {
+      return await convertImgurGallerySubmissionToDirectLink(submission);
+    } else if (urlType === "imgur-direct") {
+      return await convertImgurDirectSubmissionToDirectLink(submission);
+    } else if (urlType === "direct-link" || !imageUrl) {
+      return Promise.resolve(submission);
+    }
+  } catch (error) {
+    return Promise.resolve(submission);
+  }
   return Promise.resolve(submission);
 };
 
@@ -142,7 +151,7 @@ export async function fetchRedditPostById(postId: string) {
   const unformattedSubmissions = children
     .map((nestedData: any) => nestedData.data)
     .map((comment: any) => buildDefaultSubmissionFromRedditComment(comment))
-    // .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission))
+    .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission))
     .slice(1);
   // .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission));
 

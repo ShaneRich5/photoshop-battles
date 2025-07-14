@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 import { fetchRedditPostById } from "@/lib/api-clients/reddit";
 
 interface ContestPostParams {
-  params: {
+  params: Promise<{
     contestId: string;
-  };
+  }>;
 }
 
-export async function GET(request: Request, { params }: ContestPostParams) {
+export async function GET(request: Request, props: ContestPostParams) {
+  const params = await props.params;
   const contestId = params.contestId;
-  return NextResponse.json({ contestId });
-  // const results = await fetchRedditPostById(contestId);
-  // return NextResponse.json(results);
+  const results = await fetchRedditPostById(contestId);
+  return NextResponse.json(results);
 }
