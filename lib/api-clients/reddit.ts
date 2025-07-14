@@ -9,9 +9,7 @@ import {
   parseTextFromRedditCommentBody,
 } from "@/lib/utils";
 
-const REDDIT_URL = "https://www.reddit.com";
 const PHOTOSHOP_BATTLES_ENDPOINT = "r/photoshopbattles";
-const JSON_EXTENSION = ".json";
 
 interface Contest {
   id: string;
