@@ -11,7 +11,7 @@ interface ContestDetailProps {
 
 const ContestDetail = ({ contestId }: ContestDetailProps) => {
   const { isLoading, data } = useQuery({
-    queryKey: ["contests", contestId],
+    queryKey: ["contests", { contestId }],
     queryFn: async () => await fetchRedditPostById(contestId),
     refetchOnWindowFocus: false,
     retry: 0,
