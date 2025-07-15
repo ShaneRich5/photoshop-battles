@@ -3,6 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { fetchRedditPosts } from "../lib/api-clients/reddit";
+import { PiRedditLogo } from "react-icons/pi";
+import { FaRegCommentDots, FaRegThumbsUp } from "react-icons/fa";
 
 const ContestList = () => {
   const { data } = useQuery({
@@ -29,21 +31,21 @@ const ContestList = () => {
               />
             </Link>
           </div>
-          <div className="p-2">
-            <h2 className="text-md font-semibold mb-2">
+          <div className="p-2 text-center">
+            <h2 className="text-md font-semibold mb-1">
               {contest.title.replace("PsBattle: ", "")}
             </h2>
 
-            {/* <ul className="flex space-x-2">
-              <li className="flex items-center mb-2 border-2 border-gray-300 rounded-full px-3 py-1">
+            <ul className="flex space-x-2 justify-center text-">
+              <li className="flex items-center mb-2  px-3 py-1">
                 <FaRegCommentDots className="inline mr-2" />
                 <span className="text-gray-600">{contest.commentCount}</span>
               </li>
-              <li className="flex items-center mb-2 border-2 border-gray-300 rounded-full px-3 py-1">
+              <li className="flex items-center mb-2  px-3 py-1">
                 <FaRegThumbsUp className="inline mr-2" />
                 <span className="text-gray-600">{contest.upVoteCount}</span>
               </li>
-              <li className="flex items-center mb-2 border-2 border-gray-300 rounded-full px-3 py-1">
+              <li className="flex items-center mb-2  px-3 py-1">
                 <PiRedditLogo className="inline mr-2" />
                 <a
                   href={contest.permanentLink}
@@ -54,7 +56,7 @@ const ContestList = () => {
                   <span className="text-gray-600">Reddit</span>
                 </a>
               </li>
-            </ul> */}
+            </ul>
           </div>
         </div>
       ))}
