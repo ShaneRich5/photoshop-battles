@@ -25,7 +25,8 @@ interface Contest {
 const fetchWithHeaders = async (endpoint: string): Promise<Response> => {
   return fetch(`https://www.reddit.com/${endpoint}.json`, {
     headers: {
-      "User-Agent": "PhotoshopBattlesBot/0.1",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64):0.1 (by /u/spez)",
     },
   });
 };
@@ -45,7 +46,8 @@ export async function fetchRedditPosts() {
     `https://www.reddit.com/${PHOTOSHOP_BATTLES_ENDPOINT}.json`,
     {
       headers: {
-        "User-Agent": "PhotoshopBattlesBot/0.1",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64):0.1 (by /u/spez)",
       },
     }
   );
