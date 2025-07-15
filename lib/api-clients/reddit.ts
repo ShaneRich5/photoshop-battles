@@ -21,24 +21,12 @@ interface Contest {
   author?: string; // Optional, as not all posts may have an author
 }
 
-const fetchWithHeaders = async (
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<Response> => {
-  const defaultHeaders: HeadersInit = {
-    "Content-Type": "application/json",
-    "User-Agent": "PhotoshopBattles Feed/0.1",
-  };
-
-  const mergedOptions: RequestInit = {
-    ...options,
+const fetchWithHeaders = async (endpoint: string): Promise<Response> => {
+  return fetch(`https://www.reddit.com/${endpoint}.json`, {
     headers: {
-      ...defaultHeaders,
-      ...(options.headers || {}),
+      "User-Agent": "PhotoshopBattlesBot/0.1",
     },
-  };
-
-  return fetch(`https://www.reddit.com/${endpoint}.json`, mergedOptions);
+  });
 };
 
 const normalizeRedditPostListResponseToSummarizedContestList = (
