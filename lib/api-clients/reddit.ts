@@ -8,6 +8,7 @@ import {
   parseImageUrlFromRedditCommentBody,
   parseTextFromRedditCommentBody,
 } from "@/lib/utils";
+import axios from "axios";
 
 const PHOTOSHOP_BATTLES_ENDPOINT = "r/photoshopbattles";
 
@@ -40,17 +41,21 @@ const normalizeRedditPostListResponseToSummarizedContestList = (
 };
 
 export async function fetchRedditPosts() {
-  const endpoint = `${PHOTOSHOP_BATTLES_ENDPOINT}`;
-  const result = await fetchWithHeaders(endpoint);
+  const result = await axios.get(
+    `https://www.reddit.com/${PHOTOSHOP_BATTLES_ENDPOINT}.json`,
+    {
+      headers: {
+        "User-Agent": "PhotoshopBattlesBot/0.1",
+      },
+    }
+  );
 
-  if (!result.ok) {
-    const text = await result.text();
-    console.error("Non-200 response:", result.status, text);
+  if (result.status !== 200) {
+    console.error("Non-200 response:", result.status, result.data);
     return [];
   }
 
-  const data = await result.json();
-  return normalizeRedditPostListResponseToSummarizedContestList(data);
+  return normalizeRedditPostListResponseToSummarizedContestList(result.data);
 }
 
 const normalizeRedditPostDetailResponseToContestDetail = (
