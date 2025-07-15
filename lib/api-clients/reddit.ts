@@ -133,7 +133,7 @@ const fetchAndAppendSubmissionImageUrl = async (
     }
   } catch (error) {
     console.error(
-      `Error fetching image URL for submission: ${submission.id}`,
+      `Error fetching ${urlType} image URL for submission: ${submission.id}`,
       error
     );
     return Promise.resolve(submission);
@@ -168,6 +168,8 @@ export async function fetchRedditPostById(postId: string) {
     .slice(1);
 
   const submissions = await Promise.all(unformattedSubmissions);
+
+  console.log("Submissions fetched:", submissions);
 
   return { contest, submissions };
 }
