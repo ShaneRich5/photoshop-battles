@@ -2,21 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { fetchRedditPosts } from "../lib/api-clients/reddit";
 
 const ContestList = () => {
   const { data } = useQuery({
     queryKey: ["contests"],
-    queryFn: async () => {
-      const response = await fetch("/api/contests", {
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) RedditScraper/1.0",
-        },
-      });
-      const data = await response.json();
-      return data.data; // Assuming the API returns an object with a 'data' property containing the contests
-    },
+    queryFn: async () => await fetchRedditPosts(),
   });
 
   if (!data) {
