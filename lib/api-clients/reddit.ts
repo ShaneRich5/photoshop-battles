@@ -8,7 +8,6 @@ import {
   parseImageUrlFromRedditCommentBody,
   parseTextFromRedditCommentBody,
 } from "@/lib/utils";
-import axios from "axios";
 
 const PHOTOSHOP_BATTLES_ENDPOINT = "r/photoshopbattles";
 
@@ -26,7 +25,7 @@ const fetchWithHeaders = async (endpoint: string): Promise<Response> => {
   return fetch(`https://www.reddit.com/${endpoint}.json`, {
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64):0.1 (by /u/spez)",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) RedditScraper/1.0",
     },
   });
 };
@@ -42,22 +41,17 @@ const normalizeRedditPostListResponseToSummarizedContestList = (
 };
 
 export async function fetchRedditPosts() {
-  const result = await axios.get(
-    `https://www.reddit.com/${PHOTOSHOP_BATTLES_ENDPOINT}.json`,
-    {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64):0.1 (by /u/spez)",
-      },
-    }
-  );
+  const endpoint = `${PHOTOSHOP_BATTLES_ENDPOINT}`;
+  const result = await fetchWithHeaders(endpoint);
 
-  if (result.status !== 200) {
-    console.error("Non-200 response:", result.status, result.data);
+  if (!result.ok) {
+    const text = await result.text();
+    console.error("Non-200 response:", result.status, text);
     return [];
   }
 
-  return normalizeRedditPostListResponseToSummarizedContestList(result.data);
+  const data = await result.json();
+  return normalizeRedditPostListResponseToSummarizedContestList(data);
 }
 
 const normalizeRedditPostDetailResponseToContestDetail = (
