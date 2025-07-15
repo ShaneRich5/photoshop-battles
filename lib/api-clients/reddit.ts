@@ -54,6 +54,13 @@ const normalizeRedditPostListResponseToSummarizedContestList = (
 export async function fetchRedditPosts() {
   const endpoint = `${PHOTOSHOP_BATTLES_ENDPOINT}`;
   const result = await fetchWithHeaders(endpoint);
+
+  if (!result.ok) {
+    const text = await result.text();
+    console.error("Non-200 response:", result.status, text);
+    return [];
+  }
+
   const data = await result.json();
   return normalizeRedditPostListResponseToSummarizedContestList(data);
 }
