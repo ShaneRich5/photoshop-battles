@@ -5,6 +5,17 @@ import Link from "next/link";
 import { fetchRedditPosts } from "../lib/api-clients/reddit";
 import { PiRedditLogo } from "react-icons/pi";
 import { FaRegCommentDots, FaRegThumbsUp } from "react-icons/fa";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const SkeletonContestLoading = () => (
+  <div className="flex flex-col space-y-3">
+    <Skeleton className="w-full h-48 rounded-xl" />
+    <div className="space-y-2 flex flex-col justify-center items-center">
+      <Skeleton className="h-4 w-[250px]" />
+      <Skeleton className="h-4 w-[200px]" />
+    </div>
+  </div>
+);
 
 const ContestList = () => {
   const { data } = useQuery({
@@ -13,10 +24,19 @@ const ContestList = () => {
   });
 
   if (!data) {
-    return <p>Loading contests...</p>;
+    return (
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 9 }).map((_, index) => (
+          <div key={index}>
+            <SkeletonContestLoading />
+          </div>
+        ))}
+      </div>
+    );
   }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
       {data.map((contest: any) => (
         <div key={contest.id}>
           <div
