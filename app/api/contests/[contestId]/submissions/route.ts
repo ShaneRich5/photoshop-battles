@@ -7,7 +7,7 @@ interface ContestPostParams {
   }>;
 }
 
-export async function GET(props: ContestPostParams) {
+export async function GET(request: Request, props: ContestPostParams) {
   const params = await props.params;
   const contestId = params.contestId;
   const results = await fetchRedditSubmissionListByPostId(contestId);
