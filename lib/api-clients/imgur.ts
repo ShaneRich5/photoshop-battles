@@ -2,7 +2,7 @@ const IMGUR_URL = "https://api.imgur.com/3";
 
 const parseJsonSafe = async (response: Response) => {
   const contentType = response.headers.get("content-type") || "";
-  if (!contentType.includes("application/json")) {
+  if (!contentType.includes("application/json") || !response.ok) {
     const text = await response.text();
     throw new Error(
       `Expected JSON, got ${contentType}. Response snippet: ${text}`
