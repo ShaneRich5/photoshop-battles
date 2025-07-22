@@ -1,5 +1,16 @@
 const IMGUR_URL = "https://api.imgur.com/3";
 
+const parseJsonSafe = async (response: Response) => {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    const text = await response.text();
+    throw new Error(
+      `Expected JSON, got ${contentType}. Response snippet: ${text}`
+    );
+  }
+  return response.json();
+};
+
 const fetchWithHeaders = async (
   endpoint: string,
   options: RequestInit = {}
@@ -33,7 +44,7 @@ export const fetchAlbumImageUrl = async (
 
   const {
     data: [{ link }],
-  } = await response.json();
+  } = await parseJsonSafe(response);
   return link;
 };
 
@@ -50,7 +61,7 @@ export const fetchGalleryImageUrl = async (
     );
   }
 
-  const jsonResult = await response.json();
+  const jsonResult = await parseJsonSafe(response);
 
   const {
     data: [{ link }],
@@ -71,6 +82,6 @@ export const fetchSingleImageUrl = async (
 
   const {
     data: { link },
-  } = await response.json();
+  } = await parseJsonSafe(response);
   return link;
 };
