@@ -171,12 +171,20 @@ export async function fetchRedditPostById(postId: string) {
 export async function fetchRedditSubmissionPostById(postId: string) {
   const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
   const result = await fetchWithHeaders(url);
+  console.log("reddit.ts) fetchRedditSubmissionPostById result:", result);
   const response = await result.json();
+  console.log("reddit.ts) fetchRedditSubmissionPostById response:", response);
   const commentData = response[1];
+  console.log(
+    "reddit.ts) fetchRedditSubmissionPostById commentData:",
+    commentData
+  );
 
   const {
     data: { children },
   } = commentData;
+
+  console.log("reddit.ts) fetchRedditSubmissionPostById children:", children);
 
   const unformattedSubmissions = children
     .map((nestedData: any) => nestedData.data)
