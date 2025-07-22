@@ -6,7 +6,7 @@ const fetchWithHeaders = async (
 ): Promise<Response> => {
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
-    Authorization: `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+    Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
   };
 
   const mergedOptions: RequestInit = {

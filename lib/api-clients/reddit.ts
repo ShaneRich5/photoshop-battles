@@ -80,6 +80,7 @@ const buildDefaultSubmissionFromRedditComment = (comment: any) => {
     title,
     urlType,
     imageUrl,
+    originalImageUrl: imageUrl,
     author: comment.author ?? null,
     permalink: comment.permalink ?? null,
     upvoteCount: comment.ups ?? null,
@@ -155,7 +156,22 @@ export async function fetchRedditPostById(postId: string) {
     },
   } = postData;
 
-  const contest = normalizeRedditPostDetailResponseToContestDetail(post);
+  return normalizeRedditPostDetailResponseToContestDetail(post);
+}
+
+export async function fetchRedditSubmissionPostById(postId: string) {
+  const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
+  const result = await fetchWithHeaders(url);
+  const response = await result.json();
+
+  const postData = response[0];
+  const commentData = response[1];
+
+  const {
+    data: {
+      children: [{ data: post }],
+    },
+  } = postData;
 
   const {
     data: { children },
@@ -167,9 +183,5 @@ export async function fetchRedditPostById(postId: string) {
     .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission))
     .slice(1);
 
-  const submissions = await Promise.all(unformattedSubmissions);
-
-  console.log("Submissions fetched:", submissions);
-
-  return { contest, submissions };
+  return await Promise.all(unformattedSubmissions);
 }
