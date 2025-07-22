@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
-// import { fetchRedditSubmissionPostById } from "../../../lib/api-clients/reddit";
+import { fetchRedditSubmissionPostById } from "@/lib/api-clients/reddit";
 import ContestHeaderSummary from "@/components/contest-header-summary";
 
 interface ContestDetailPageProps {
@@ -14,7 +14,13 @@ export default async function ContestDetailPage({
 }: ContestDetailPageProps) {
   const { contestId } = await params;
   console.log("Contest ID:", contestId);
-  // const submissions = await fetchRedditSubmissionPostById(contestId);
+
+  try {
+    const submissions = await fetchRedditSubmissionPostById(contestId);
+    console.log("Submissions:", submissions);
+  } catch (error) {
+    console.error("Error fetching submissions:", error);
+  }
 
   return (
     <div className="pt-4">
