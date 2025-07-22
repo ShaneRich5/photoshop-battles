@@ -15,12 +15,8 @@ export default async function ContestDetailPage({
   const { contestId } = await params;
   console.log("Contest ID:", contestId);
 
-  try {
-    const submissions = await fetchRedditSubmissionPostById(contestId);
-    console.log("Submissions:", submissions);
-  } catch (error) {
-    console.error("Error fetching submissions:", error);
-  }
+  const submissions = await fetchRedditSubmissionPostById(contestId);
+  console.log("Submissions:", submissions);
 
   return (
     <div className="pt-4">
@@ -36,7 +32,7 @@ export default async function ContestDetailPage({
         <div className="mb-8">
           <ContestHeaderSummary contestId={contestId} />
         </div>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {submissions
             .filter((submission) => submission.imageUrl)
             .map((submission: any) => (
@@ -52,7 +48,7 @@ export default async function ContestDetailPage({
                 <p className="text-gray-600 text-sm">by {submission.author}</p>
               </div>
             ))}
-        </div> */}
+        </div>
       </main>
     </div>
   );
