@@ -12,22 +12,27 @@ interface ContestDetailProps {
 }
 
 const ContestDetail = ({ contestId }: ContestDetailProps) => {
-  const { isLoading, data: contest } = useQuery({
+  const { isLoading, data: contestDetail } = useQuery({
     queryKey: ["contests", { contestId }],
     queryFn: async () => await fetchRedditPostById(contestId),
     refetchOnWindowFocus: false,
     retry: 0,
   });
 
-  const { data: submissions } = useQuery({
-    queryKey: ["contest-submissions", { contestId }],
-    queryFn: async () =>
-      await fetch(`/api/contests/${contestId}/submissions`).then((res) =>
-        res.json()
-      ),
-    refetchOnWindowFocus: false,
-    retry: 0,
-  });
+  const { contest, submissions } = contestDetail || {};
+
+  // const { data: submissions } = useQuery({
+  //   queryKey: ["contest-submissions", { contestId }],
+  //   queryFn: async () =>
+  //     await fetch(`/api/contests/${contestId}/submissions`).then((res) =>
+  //       res.json()
+  //     ),
+  //   refetchOnWindowFocus: false,
+  //   retry: 0,
+  // });
+
+  console.log("contest:", contest);
+  console.log("submissions:", submissions);
 
   const header =
     isLoading || !contest ? (
@@ -38,8 +43,8 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
   return (
     <div>
       <div className="mb-8">{header}</div>
-      {JSON.stringify(contest, null, 2)}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {JSON.stringify(contest)}
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {((submissions as any[]) || [])
           .filter((submission) => submission.imageUrl)
           .map((submission: any) => (
@@ -55,7 +60,7 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
           ))}
       </div>
       Submissions:
-      {JSON.stringify(submissions, null, 2)}
+      {JSON.stringify(submissions, null, 2)} */}
     </div>
   );
 };

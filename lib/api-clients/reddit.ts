@@ -22,10 +22,7 @@ interface Contest {
 }
 
 const fetchWithHeaders = async (endpoint: string): Promise<Response> => {
-  const baseUrl = `https://www.reddit.com/${endpoint}`;
-  const finalurl = baseUrl.replace(/\/+$/, "") + ".json";
-
-  return fetch(finalurl, {
+  return fetch(`https://www.reddit.com/${endpoint}.json`, {
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) RedditScraper/1.0",
@@ -158,6 +155,7 @@ export async function fetchRedditPostById(postId: string) {
   const response = await result.json();
 
   const postData = response[0];
+  const commentData = response[1];
 
   const {
     data: {
@@ -165,7 +163,63 @@ export async function fetchRedditPostById(postId: string) {
     },
   } = postData;
 
-  return normalizeRedditPostDetailResponseToContestDetail(post);
+  const {
+    data: { children },
+  } = commentData;
+
+  const submissions = children
+    .map((nestedData: any) => nestedData.data)
+    .map((comment: any) => buildDefaultSubmissionFromRedditComment(comment));
+
+  console.log("response:", response);
+  console.log("postData:", postData);
+  console.log("commentData:", commentData);
+
+  return {
+    contest: normalizeRedditPostDetailResponseToContestDetail(post),
+    submissions,
+  };
+}
+
+export async function fetchRedditContestDetailByPostId(postId: string) {
+  const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
+  const result = await fetchWithHeaders(url);
+  console.log("reddit.ts) fetchRedditSubmissionListByPostId result:", result);
+  const response = await result.json();
+  console.log(
+    "reddit.ts) fetchRedditSubmissionListByPostId response:",
+    response
+  );
+
+  const postData = response[0];
+  const commentData = response[1];
+
+  console.log(
+    "reddit.ts) fetchRedditSubmissionListByPostId commentData:",
+    commentData
+  );
+
+  const {
+    data: { children },
+  } = commentData;
+
+  console.log(
+    "reddit.ts) fetchRedditSubmissionListByPostId children:",
+    children
+  );
+
+  const unformattedSubmissions = children
+    .map((nestedData: any) => nestedData.data)
+    .map((comment: any) => buildDefaultSubmissionFromRedditComment(comment))
+    .map((submission: any) => fetchAndAppendSubmissionImageUrl(submission))
+    .slice(1);
+
+  const submissions = await Promise.all(unformattedSubmissions);
+
+  return {
+    contest: normalizeRedditPostDetailResponseToContestDetail(postData.data),
+    submissions,
+  };
 }
 
 export async function fetchRedditSubmissionListByPostId(postId: string) {
