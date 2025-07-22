@@ -38,6 +38,21 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
     <div>
       <div className="mb-8">{header}</div>
       {JSON.stringify(submissions, null, 2)}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {((submissions as any[]) || [])
+          .filter((submission) => submission.imageUrl)
+          .map((submission: any) => (
+            <div key={submission.id} className="text-center ">
+              <img
+                src={submission.imageUrl}
+                alt={submission.title}
+                className="w-full object-cover rounded-lg"
+              />
+              <h2 className="text-md font-semibold mt-2">{submission.title}</h2>
+              <p className="text-gray-600 text-sm">by {submission.author}</p>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
