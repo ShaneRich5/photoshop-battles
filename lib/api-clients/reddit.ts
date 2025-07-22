@@ -91,7 +91,7 @@ export const convertImgurAlbumSubmissionToDirectLink = async (
   submission: any
 ): Promise<any> => {
   const { imageUrl } = submission;
-  const albumHash = imageUrl.split("/").pop();
+  const albumHash = imageUrl.split("/").pop().split("#")[0];
   const url = await fetchAlbumImageUrl(albumHash);
 
   return { ...submission, imageUrl: url };

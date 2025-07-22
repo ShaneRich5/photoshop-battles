@@ -39,13 +39,7 @@ export default async function ContestDetailPage({
                   className="w-full object-cover rounded-lg"
                 />
                 <h2 className="text-md font-semibold mt-2">
-                  Title: {submission.title}
-                  <br />
-                  Original Image URL: {submission.originalImageUrl}
-                  <br />
-                  Image URL: {submission.imageUrl}
-                  <br />
-                  Url Type: {submission.urlType}
+                  {submission.title}
                 </h2>
                 <p className="text-gray-600 text-sm">by {submission.author}</p>
               </div>
