@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
 import { fetchRedditSubmissionPostById } from "../../../lib/api-clients/reddit";
-import ContestHeaderSummary from "../../../components/contest-header-summary";
+// import ContestHeaderSummary from "../../../components/contest-header-summary";
 
 interface ContestDetailPageProps {
   params: Promise<{
@@ -26,9 +26,9 @@ export default async function ContestDetailPage({
             </span>
           </Link>
         </div>
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <ContestHeaderSummary contestId={contestId} />
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {submissions
             .filter((submission) => submission.imageUrl)
