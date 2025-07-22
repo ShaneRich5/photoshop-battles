@@ -1,7 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchRedditPostById } from "../lib/api-clients/reddit";
+import {
+  fetchRedditPostById,
+  fetchRedditSubmissionListByPostId,
+} from "../lib/api-clients/reddit";
 import {
   LoadedContestHeader,
   SkeletonContestHeader,
@@ -19,6 +22,13 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
     retry: 0,
   });
 
+  const { isLoading: isSubmissionListLoading, data: submissions } = useQuery({
+    queryKey: ["contest-submissions", { contestId }],
+    queryFn: async () => await fetchRedditSubmissionListByPostId(contestId),
+    refetchOnWindowFocus: false,
+    retry: 0,
+  });
+
   const header = isLoading ? (
     <SkeletonContestHeader />
   ) : (
@@ -27,6 +37,7 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
   return (
     <div>
       <div className="mb-8">{header}</div>
+      {JSON.stringify(submissions, null, 2)}
     </div>
   );
 };
