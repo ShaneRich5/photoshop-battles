@@ -1,51 +1,59 @@
+import axios, { AxiosResponse } from "axios";
+
 const IMGUR_URL = "https://api.imgur.com/3";
 
-const parseJsonSafe = async (response: Response) => {
-  const contentType = response.headers.get("content-type") || "";
-  if (!contentType.includes("application/json") || !response.ok) {
-    const text = await response.text();
-    throw new Error(
-      `Expected JSON, got ${contentType}. Response snippet: ${text}`
-    );
-  }
-
-  try {
-    return response.json();
-  } catch {
-    throw new Error(`Failed to parse JSON: ${response.statusText}`);
-  }
-};
-
-const fetchWithHeaders = async (
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<Response> => {
-  const defaultHeaders: HeadersInit = {
+const imgurClient = axios.create({
+  baseURL: IMGUR_URL,
+  headers: {
     "Content-Type": "application/json",
     Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-  };
+  },
+});
 
-  const mergedOptions: RequestInit = {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...(options.headers || {}),
-    },
-  };
+const parseJsonSafe = async (response: AxiosResponse) => {
+  // const contentType = response.headers.get("content-type") || "";
+  // if (!contentType.includes("application/json") || !response.ok) {
+  //   const text = await response.text();
+  //   throw new Error(
+  //     `Expected JSON, got ${contentType}. Response snippet: ${text}`
+  //   );
+  // }
+  // try {
+  //   return response.json();
+  // } catch {
+  //   throw new Error(`Failed to parse JSON: ${response.statusText}`);
+  // }
+  return response.data;
+};
 
-  return fetch(`${IMGUR_URL}${endpoint}`, mergedOptions);
+const fetchWithHeaders = async (endpoint: string): Promise<AxiosResponse> => {
+  // const defaultHeaders: HeadersInit = {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+  // };
+
+  // const mergedOptions: RequestInit = {
+  //   ...options,
+  //   headers: {
+  //     ...defaultHeaders,
+  //     ...(options.headers || {}),
+  //   },
+  // };
+
+  // return fetch(`${IMGUR_URL}${endpoint}`, mergedOptions);
+
+  try {
+    return await imgurClient.get(endpoint);
+  } catch (error) {
+    console.error(`Error fetching from ${endpoint} Imgur:`, error);
+    throw error;
+  }
 };
 
 export const fetchAlbumImageUrl = async (
   albumHash: string
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/album/${albumHash}/images`);
-
-  if (!response.ok) {
-    throw new Error(
-      `Fetch failed with status ${response.status}: ${response.statusText}`
-    );
-  }
 
   const {
     data: [{ link }],
@@ -60,12 +68,6 @@ export const fetchGalleryImageUrl = async (
     `/gallery/album/${galleryHash}/images`
   );
 
-  if (!response.ok) {
-    throw new Error(
-      `Fetch failed with status ${response.status}: ${response.statusText}`
-    );
-  }
-
   const jsonResult = await parseJsonSafe(response);
 
   const {
@@ -78,12 +80,6 @@ export const fetchSingleImageUrl = async (
   imageHash: string
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/image/${imageHash}`);
-
-  if (!response.ok) {
-    throw new Error(
-      `Fetch failed with status ${response.status}: ${response.statusText}`
-    );
-  }
 
   const {
     data: { link },
