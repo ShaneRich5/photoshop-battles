@@ -43,7 +43,18 @@ const fetchWithHeaders = async (endpoint: string): Promise<AxiosResponse> => {
   // return fetch(`${IMGUR_URL}${endpoint}`, mergedOptions);
 
   try {
-    return await imgurClient.get(endpoint);
+    console.log(`Fetching Imgur endpoint: ${endpoint}`);
+    const response = await imgurClient.get(endpoint);
+    console.log(
+      `Imgur response status: ${response.status}`,
+      response.statusText
+    );
+    if (!response.data || !response.data.success) {
+      throw new Error(
+        `Imgur API error: ${response.data?.data?.error || "Unknown error"}`
+      );
+    }
+    return response;
   } catch (error: any) {
     console.error(`(imgur.ts) Error fetching from ${endpoint} Imgur:`, error);
 
