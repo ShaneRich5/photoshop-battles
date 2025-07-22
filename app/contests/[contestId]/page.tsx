@@ -16,8 +16,6 @@ export default async function ContestDetailPage({
   const { contestId } = await params;
   const submissions = await fetchRedditSubmissionPostById(contestId);
 
-  console.log("Contest Detail Page Result:", submissions);
-
   return (
     <div className="pt-4">
       <main className="max-w-6xl mx-auto px-4 py-8">
