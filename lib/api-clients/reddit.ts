@@ -101,7 +101,14 @@ export const convertImgurGallerySubmissionToDirectLink = async (
   submission: any
 ): Promise<any> => {
   const { imageUrl } = submission;
-  const galleryHash = imageUrl.split("/").pop();
+  let galleryHash = imageUrl.split("/").pop();
+
+  if (galleryHash.includes("-")) {
+    const parts = galleryHash.split("-");
+    if (parts.length > 1) {
+      galleryHash = parts[parts.length - 1];
+    }
+  }
   const url = await fetchGalleryImageUrl(galleryHash);
 
   return { ...submission, imageUrl: url };
@@ -148,7 +155,6 @@ export async function fetchRedditPostById(postId: string) {
   const response = await result.json();
 
   const postData = response[0];
-  const commentData = response[1];
 
   const {
     data: {

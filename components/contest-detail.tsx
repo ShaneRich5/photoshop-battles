@@ -1,10 +1,5 @@
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
-import { useQuery } from "@tanstack/react-query";
-import {
-  fetchRedditPostById,
-  fetchRedditSubmissionPostById,
-} from "@/lib/api-clients/reddit";
 import ContestHeaderSummary from "./contest-header-summary";
 
 interface ContestDetailProps {

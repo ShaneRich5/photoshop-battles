@@ -36,9 +36,11 @@ export const fetchGalleryImageUrl = async (
   const response = await fetchWithHeaders(
     `/gallery/album/${galleryHash}/images`
   );
+  const jsonResult = await response.json();
+
   const {
     data: [{ link }],
-  } = await response.json();
+  } = jsonResult;
   return link;
 };
 
