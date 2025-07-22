@@ -169,15 +169,7 @@ export async function fetchRedditSubmissionPostById(postId: string) {
   const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
   const result = await fetchWithHeaders(url);
   const response = await result.json();
-
-  const postData = response[0];
   const commentData = response[1];
-
-  const {
-    data: {
-      children: [{ data: post }],
-    },
-  } = postData;
 
   const {
     data: { children },

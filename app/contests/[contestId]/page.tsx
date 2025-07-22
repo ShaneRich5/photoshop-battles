@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
-import ContestDetail from "@/components/contest-detail";
 import { fetchRedditSubmissionPostById } from "../../../lib/api-clients/reddit";
 import ContestHeaderSummary from "../../../components/contest-header-summary";
 
