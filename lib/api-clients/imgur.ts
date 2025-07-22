@@ -11,7 +11,7 @@ const parseJsonSafe = async (response: Response) => {
 
   try {
     return response.json();
-  } catch (error) {
+  } catch {
     throw new Error(`Failed to parse JSON: ${response.statusText}`);
   }
 };
