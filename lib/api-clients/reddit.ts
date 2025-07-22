@@ -22,7 +22,10 @@ interface Contest {
 }
 
 const fetchWithHeaders = async (endpoint: string): Promise<Response> => {
-  return fetch(`https://www.reddit.com/${endpoint}.json`, {
+  const baseUrl = `https://www.reddit.com/${endpoint}`;
+  const finalurl = baseUrl.replace(/\/+$/, "") + ".json";
+
+  return fetch(finalurl, {
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) RedditScraper/1.0",
