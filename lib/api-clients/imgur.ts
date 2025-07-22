@@ -8,7 +8,12 @@ const parseJsonSafe = async (response: Response) => {
       `Expected JSON, got ${contentType}. Response snippet: ${text}`
     );
   }
-  return response.json();
+
+  try {
+    return response.json();
+  } catch (error) {
+    throw new Error(`Failed to parse JSON: ${response.statusText}`);
+  }
 };
 
 const fetchWithHeaders = async (
