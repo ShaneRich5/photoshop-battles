@@ -168,15 +168,18 @@ export async function fetchRedditPostById(postId: string) {
   return normalizeRedditPostDetailResponseToContestDetail(post);
 }
 
-export async function fetchRedditSubmissionPostById(postId: string) {
+export async function fetchRedditSubmissionListByPostId(postId: string) {
   const url = `${PHOTOSHOP_BATTLES_ENDPOINT}/${postId}`;
   const result = await fetchWithHeaders(url);
-  console.log("reddit.ts) fetchRedditSubmissionPostById result:", result);
+  console.log("reddit.ts) fetchRedditSubmissionListByPostId result:", result);
   const response = await result.json();
-  console.log("reddit.ts) fetchRedditSubmissionPostById response:", response);
+  console.log(
+    "reddit.ts) fetchRedditSubmissionListByPostId response:",
+    response
+  );
   const commentData = response[1];
   console.log(
-    "reddit.ts) fetchRedditSubmissionPostById commentData:",
+    "reddit.ts) fetchRedditSubmissionListByPostId commentData:",
     commentData
   );
 
@@ -184,7 +187,10 @@ export async function fetchRedditSubmissionPostById(postId: string) {
     data: { children },
   } = commentData;
 
-  console.log("reddit.ts) fetchRedditSubmissionPostById children:", children);
+  console.log(
+    "reddit.ts) fetchRedditSubmissionListByPostId children:",
+    children
+  );
 
   const unformattedSubmissions = children
     .map((nestedData: any) => nestedData.data)
