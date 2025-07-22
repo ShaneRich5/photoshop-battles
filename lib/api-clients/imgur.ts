@@ -24,6 +24,13 @@ export const fetchAlbumImageUrl = async (
   albumHash: string
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/album/${albumHash}/images`);
+
+  if (!response.ok) {
+    throw new Error(
+      `Fetch failed with status ${response.status}: ${response.statusText}`
+    );
+  }
+
   const {
     data: [{ link }],
   } = await response.json();
@@ -36,6 +43,13 @@ export const fetchGalleryImageUrl = async (
   const response = await fetchWithHeaders(
     `/gallery/album/${galleryHash}/images`
   );
+
+  if (!response.ok) {
+    throw new Error(
+      `Fetch failed with status ${response.status}: ${response.statusText}`
+    );
+  }
+
   const jsonResult = await response.json();
 
   const {
@@ -48,6 +62,13 @@ export const fetchSingleImageUrl = async (
   imageHash: string
 ): Promise<string> => {
   const response = await fetchWithHeaders(`/image/${imageHash}`);
+
+  if (!response.ok) {
+    throw new Error(
+      `Fetch failed with status ${response.status}: ${response.statusText}`
+    );
+  }
+
   const {
     data: { link },
   } = await response.json();
