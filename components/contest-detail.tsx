@@ -1,10 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  fetchRedditPostById,
-  fetchRedditSubmissionListByPostId,
-} from "../lib/api-clients/reddit";
+import { fetchRedditPostById } from "../lib/api-clients/reddit";
 import {
   LoadedContestHeader,
   SkeletonContestHeader,
@@ -22,24 +19,27 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
     retry: 0,
   });
 
-  const { isLoading: isSubmissionListLoading, data: submissions } = useQuery({
+  const { data: submissions } = useQuery({
     queryKey: ["contest-submissions", { contestId }],
-    queryFn: async () => await fetchRedditSubmissionListByPostId(contestId),
+    queryFn: async () =>
+      await fetch(`/api/contests/${contestId}/submissions`).then((res) =>
+        res.json()
+      ),
     refetchOnWindowFocus: false,
     retry: 0,
   });
 
-  const header = isLoading ? (
-    <SkeletonContestHeader />
-  ) : (
-    <LoadedContestHeader contest={contest} />
-  );
+  const header =
+    isLoading || !contest ? (
+      <SkeletonContestHeader />
+    ) : (
+      <LoadedContestHeader contest={contest} />
+    );
   return (
     <div>
       <div className="mb-8">{header}</div>
-      {JSON.stringify(submissions, null, 2)}
+      {JSON.stringify(contest, null, 2)}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {isSubmissionListLoading ?? "Loading submissions..."}
         {((submissions as any[]) || [])
           .filter((submission) => submission.imageUrl)
           .map((submission: any) => (
@@ -54,6 +54,8 @@ const ContestDetail = ({ contestId }: ContestDetailProps) => {
             </div>
           ))}
       </div>
+      Submissions:
+      {JSON.stringify(submissions, null, 2)}
     </div>
   );
 };
