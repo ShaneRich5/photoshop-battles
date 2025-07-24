@@ -60,6 +60,14 @@ export const generateUrlType = (
 ): SubmissionUrlType => {
   if (imageUrl === null || title === "deleted") return null;
 
+  return computeUrlTypeFromImageUrl(imageUrl);
+};
+
+export const computeUrlTypeFromImageUrl = (
+  imageUrl: string
+): SubmissionUrlType => {
+  if (!imageUrl) return null;
+
   const urlEndpoint = imageUrl.split("/").pop();
   if (!urlEndpoint) return null;
 

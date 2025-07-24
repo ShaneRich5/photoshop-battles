@@ -88,20 +88,17 @@ const buildDefaultSubmissionFromRedditComment = (comment: any) => {
 };
 
 export const convertImgurAlbumSubmissionToDirectLink = async (
-  submission: any
-): Promise<any> => {
-  const { imageUrl } = submission;
-  const albumHash = imageUrl.split("/").pop().split("#")[0];
-  const url = await fetchAlbumImageUrl(albumHash);
-
-  return { ...submission, imageUrl: url };
+  imageUrl: string
+) => {
+  const parts = imageUrl.split("/").pop() || "";
+  const albumHash = parts.split("#")[0];
+  return await fetchAlbumImageUrl(albumHash);
 };
 
 export const convertImgurGallerySubmissionToDirectLink = async (
-  submission: any
-): Promise<any> => {
-  const { imageUrl } = submission;
-  let galleryHash = imageUrl.split("/").pop();
+  imageUrl: string
+): Promise<string> => {
+  let galleryHash = imageUrl.split("/").pop() || "";
 
   if (galleryHash.includes("-")) {
     const parts = galleryHash.split("-");
@@ -109,19 +106,40 @@ export const convertImgurGallerySubmissionToDirectLink = async (
       galleryHash = parts[parts.length - 1];
     }
   }
-  const url = await fetchGalleryImageUrl(galleryHash);
 
-  return { ...submission, imageUrl: url };
+  return await fetchGalleryImageUrl(galleryHash);
 };
 
 export const convertImgurDirectSubmissionToDirectLink = async (
-  submission: any
-): Promise<any> => {
-  const { imageUrl } = submission;
-  const imageHash = imageUrl.split("/").pop();
-  const url = await fetchSingleImageUrl(imageHash);
+  imageUrl: string
+): Promise<string> => {
+  const imageHash = imageUrl.split("/").pop() ?? "";
+  return await fetchSingleImageUrl(imageHash);
+};
 
-  return { ...submission, imageUrl: url };
+export const fetchProcessedImageUrl = async (
+  imageUrl: string,
+  urlType: string
+) => {
+  // Implement your image URL processing logic here
+  try {
+    if (urlType === "imgur-album") {
+      return await convertImgurAlbumSubmissionToDirectLink(imageUrl);
+    } else if (urlType === "imgur-gallery") {
+      return await convertImgurGallerySubmissionToDirectLink(imageUrl);
+    } else if (urlType === "imgur-direct") {
+      return await convertImgurDirectSubmissionToDirectLink(imageUrl);
+    } else if (urlType === "direct-link" || !imageUrl) {
+      return Promise.resolve(imageUrl);
+    }
+  } catch (error) {
+    console.error(
+      `Error fetching ${urlType} image URL for submission: ${imageUrl}`,
+      error
+    );
+  }
+
+  return imageUrl;
 };
 
 const fetchAndAppendSubmissionImageUrl = async (
@@ -163,22 +181,18 @@ export async function fetchRedditPostById(postId: string) {
     },
   } = postData;
 
+  const contest = normalizeRedditPostDetailResponseToContestDetail(post);
+
   const {
     data: { children },
   } = commentData;
 
   const submissions = children
+    .slice(1) // Skip the first comment which is usually the post itself
     .map((nestedData: any) => nestedData.data)
     .map((comment: any) => buildDefaultSubmissionFromRedditComment(comment));
 
-  console.log("response:", response);
-  console.log("postData:", postData);
-  console.log("commentData:", commentData);
-
-  return {
-    contest: normalizeRedditPostDetailResponseToContestDetail(post),
-    submissions,
-  };
+  return { contest, submissions };
 }
 
 export async function fetchRedditContestDetailByPostId(postId: string) {
